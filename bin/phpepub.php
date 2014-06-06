@@ -1,19 +1,26 @@
 <?php
 spl_autoload_register("loadLibrary");
 
-//check command line argument
-if(!isset($argv[1]) || !is_readable($argv[1])){
-    showUsage();
+
+//command line argument compile  && argument validation 
+$argObj = new Argument($argv);
+if(!$argObj->validate() || $argObj->needHelp()){
+    $argObj->showMessage();
+    exit(1);
 }
 
-//read sourcecode hierarchy 
-$hierarchy = EntityHelper::readHierarchy($argv[1]);
+//EPUB Contents Collection
+$epubContents = EpubCollector::assemble();
 
-//EPUBコンテナ呼び出し。EPUB形式でのファイルを出力
-EpubContainer::publish($entities);
+//EPUB Contents Publish (without zip archive if specified)
+if($filename = EpubMaker::publish($epubContents)){
+    print("epub creation completed => $filename\n");
+    exit(0);
+}
+print("epub creation failed");
+exit(1);
 
-//zip archive
-ArchiveHelper::publishEpub($epubdir);
+
 
 /*
  * autoload function for phpepub 
@@ -26,7 +33,3 @@ function loadLibrary($className) {
     }
 }
 
-function showUsage(){
-    echo("usage");
-    exit(1);
-}

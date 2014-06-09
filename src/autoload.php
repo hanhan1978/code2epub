@@ -5,6 +5,10 @@ spl_autoload_register("loadLibrary");
 
 define("DS", "/");
 
+
+
+$epubContents = EpubCollector::assemble("../test/res/hoge1");
+
 /*
  * Autoloader for phpepub
  * @param $className  Name of class to be loaded

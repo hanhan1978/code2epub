@@ -1,5 +1,5 @@
 <?php
-spl_autoload_register("loadLibrary");
+require_once("../src/autoload.php");
 
 
 //command line argument compile  && argument validation 
@@ -31,15 +31,4 @@ print("epub creation failed");
 exit(1);
 
 
-
-/*
- * autoload function for phpepub 
- */
-function loadLibrary($className) {
-    $namespaces = array('entity', 'helper', 'epub', 'epub/xhtml');
-    foreach($namespaces as $namespace){
-        $file=sprintf("../src/%s/".$className . ".php", $namespace);
-        if (is_readable($file)) require $file;
-    }
-}
 

@@ -7,6 +7,16 @@ $argObj = new Argument($argv);
 if(!$argObj->validate() || $argObj->needHelp()){
     $argObj->showMessage();
     exit(1);
+    /** memo
+    argument
+       --no-archive    => do not archive epub
+       -v              => show verbose log (notice)
+       -vv             => show verbose log (info)
+       -vvv            => show verbose log (debug)
+       default => source directory or filename to view
+
+       TODO:Think about use of Symfony console library that sounds good
+    **/
 }
 
 //EPUB Contents Collection

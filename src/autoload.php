@@ -7,7 +7,6 @@ define("DS", "/");
 
 
 
-$epubContents = EpubCollector::assemble("../test/res/hoge1");
 
 /*
  * Autoloader for phpepub

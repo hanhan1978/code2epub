@@ -7,7 +7,10 @@ class EpubCollector{
      *
      */
     public static function assemble($dirname){
-        $d=dir($dirname);
+        if(!is_dir($dirname))
+          return new FileEntry($dirname);
+        else
+          $d=dir($dirname);
         
         $box = new DirectoryEntry($dirname); 
         while($entry = $d->read()){

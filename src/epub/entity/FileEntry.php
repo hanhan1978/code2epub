@@ -4,7 +4,7 @@ class FileEntry extends Base {
     public function add($file){
         return false;
     }
-    public function getChild(){
+    public function getChildren(){
         return false;
     }
 }

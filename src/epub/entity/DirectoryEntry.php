@@ -2,11 +2,11 @@
 
 class DirectoryEntry extends Base{
 
-    public function getChild(){
-        return $this->_childs;
+    public function getChildren(){
+        return $this->_children;
     }
     public function add($file){
-        $this->_childs[] = $file;
+        $this->_children[] = $file;
     }
 
 }

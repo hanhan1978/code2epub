@@ -1,11 +1,12 @@
 <?php
 
 
-class EpubCollector{
+class Crawler{
+
     /*
      *
      */
-    public static function assemble($dirname){
+    public static function do($dirname){
         if(!is_dir($dirname))
           return new FileEntry($dirname);
         else

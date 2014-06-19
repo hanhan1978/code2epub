@@ -2,11 +2,10 @@
 
 
 class Crawler{
-
     /*
      *
      */
-    public static function do($dirname){
+    public static function crawl($dirname){
         if(!is_dir($dirname))
           return new FileEntry($dirname);
         else
@@ -16,7 +15,7 @@ class Crawler{
         while($entry = $d->read()){
             if(preg_match("/^\.+$/", $entry)) continue;
             if(is_dir($dirname.DS.$entry))
-              $box->add(self::assemble($dirname.DS.$entry)); 
+              $box->add(self::crawl($dirname.DS.$entry)); 
             else
               $box->add(new FileEntry($entry));
         }

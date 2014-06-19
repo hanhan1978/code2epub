@@ -20,7 +20,7 @@ if(!$argObj->validate() || $argObj->needHelp()){
 }
 
 //EPUB Contents Collection
-$epubContents = EpubCollector::assemble();
+$epubContents = CrawlerFactory::createCrawler()->crawl();
 
 //EPUB Contents Publish (without zip archive if specified)
 if($filename = EpubMaker::publish($epubContents)){

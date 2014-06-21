@@ -1,12 +1,12 @@
 <?php
 
 
-class Crawler{
+class FileCrawler implements Crawler{
 
     /*
      *
      */
-    public static function do($dirname){
+    public function crawl($dirname){
         if(!is_dir($dirname))
           return new FileEntry($dirname);
         else

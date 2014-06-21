@@ -3,11 +3,14 @@
 abstract class Base {
     private $_name;
     protected $_children = array();
+
+
     public function __construct($name){
         $this->_name = $name;
     }
     abstract public function add($file);
     abstract public function getChildren();
+    abstract public function toHtml();
 
     public function getName(){
         return $this->_name;

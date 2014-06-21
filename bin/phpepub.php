@@ -23,6 +23,12 @@ if(!$argObj->validate() || $argObj->needHelp()){
 $epubContents = CrawlerFactory::createCrawler()->crawl();
 
 //EPUB Contents Publish (without zip archive if specified)
+//
+EpubContents::assemble($eputContents);
+
+
+
+
 if($filename = EpubMaker::publish($epubContents)){
     print("epub creation completed => $filename\n");
     exit(0);

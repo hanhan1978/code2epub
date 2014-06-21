@@ -8,5 +8,8 @@ class DirectoryEntry extends Base{
     public function add($file){
         $this->_children[] = $file;
     }
+    public function toHtml(){
+
+    }
 
 }

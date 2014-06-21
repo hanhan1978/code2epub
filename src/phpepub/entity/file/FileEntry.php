@@ -7,4 +7,8 @@ class FileEntry extends Base {
     public function getChildren(){
         return false;
     }
+
+    public function toHtml(){
+
+    }
 }

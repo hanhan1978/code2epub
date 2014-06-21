@@ -1,15 +1,15 @@
 <?php
 
-abstract class Base {
+abstract class AbstractEntry {
     private $_name;
-    private $_smarty;
+    protected $_smarty;
     protected $_children = array();
-
 
     public function __construct($name){
         $this->_name = $name;
-        $this->_smarty = new Smarty();
+        $this->setSmarty();
     }
+
     abstract public function add($file);
     abstract public function getChildren();
     abstract public function toHtml();
@@ -17,6 +17,20 @@ abstract class Base {
     public function getName(){
         return $this->_name;
     }
+
+    private function setSmarty(){
+        $this->_smarty = new Smarty();
+        $this->_smarty->template_dir = SMARTY_TEMPLATE_ROOT."templates";
+        $this->_smarty->compile_dir  = SMARTY_TEMPLATE_ROOT."templates_c";
+        $this->_smarty->config_dir   = SMARTY_TEMPLATE_ROOT."configs";
+        $this->_smarty->cache_dir    = SMARTY_TEMPLATE_ROOT."cache";
+    }
+
+
+    
+
+
+
     /**
     public function dump($indent=0){
         if($indent==0) $this->padPrint($indent, $this->_name);

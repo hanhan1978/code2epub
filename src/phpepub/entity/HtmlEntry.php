@@ -1,6 +1,6 @@
 <?php
 
-class HtmlEntry extends Base{
+class HtmlEntry extends AbstractEntry{
 
     public function getChildren(){
         return $this->_children;

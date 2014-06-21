@@ -1,6 +1,6 @@
 <?php
 
-class DirectoryEntry extends Base{
+class DirectoryEntry extends AbstractEntry{
 
     public function getChildren(){
         return $this->_children;

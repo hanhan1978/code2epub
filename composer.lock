@@ -4,8 +4,53 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5b46f6543f23c038b2071cbddeb5db5c",
-    "packages": [],
+    "hash": "39f91a9590116ffb9fe2f16692f7fca6",
+    "packages": [
+        {
+            "name": "smarty/smarty",
+            "version": "dev-trunk",
+            "source": {
+                "type": "svn",
+                "url": "http://smarty-php.googlecode.com/svn",
+                "reference": "/trunk/@4851"
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "distribution/libs/Smarty.class.php",
+                    "distribution/libs/SmartyBC.class.php",
+                    "distribution/libs/sysplugins/smarty_security.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Monte Ohrt",
+                    "email": "monte@ohrt.com"
+                },
+                {
+                    "name": "Uwe Tews",
+                    "email": "uwe.tews@googlemail.com"
+                },
+                {
+                    "name": "Rodney Rehm",
+                    "email": "rodney.rehm@medialize.de"
+                }
+            ],
+            "description": "Smarty - the compiling PHP template engine",
+            "homepage": "http://www.smarty.net",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2014-06-17 22:24:20"
+        }
+    ],
     "packages-dev": [
         {
             "name": "phpunit/php-code-coverage",
@@ -257,16 +302,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.1.1",
+            "version": "4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "1d6b554732382879045e11c56decd4be76130720"
+                "reference": "939cb801b3b2aa253aedd0b279f40bb8f35cec91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1d6b554732382879045e11c56decd4be76130720",
-                "reference": "1d6b554732382879045e11c56decd4be76130720",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/939cb801b3b2aa253aedd0b279f40bb8f35cec91",
+                "reference": "939cb801b3b2aa253aedd0b279f40bb8f35cec91",
                 "shasum": ""
             },
             "require": {
@@ -327,20 +372,20 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-05-24 10:48:51"
+            "time": "2014-06-11 14:15:47"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "2.1.0",
+            "version": "2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "da0eb04d8ee95ec2898187e407e519c118d3d27c"
+                "reference": "1a894a16b6c15fcdc5ef2b110f0e6233952c9b0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/da0eb04d8ee95ec2898187e407e519c118d3d27c",
-                "reference": "da0eb04d8ee95ec2898187e407e519c118d3d27c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/1a894a16b6c15fcdc5ef2b110f0e6233952c9b0f",
+                "reference": "1a894a16b6c15fcdc5ef2b110f0e6233952c9b0f",
                 "shasum": ""
             },
             "require": {
@@ -384,7 +429,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2014-05-02 07:04:11"
+            "time": "2014-06-07 16:22:57"
         },
         {
             "name": "sebastian/comparator",
@@ -705,7 +750,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "smarty/smarty": 20
+    },
     "platform": [],
     "platform-dev": []
 }

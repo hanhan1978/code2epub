@@ -24,17 +24,13 @@ $epubContents = CrawlerFactory::createCrawler()->crawl();
 
 //EPUB Contents Publish (without zip archive if specified)
 //
-EpubContents::assemble($eputContents);
+$contents = EpubMaker::assemble($eputContents);
 
+if(true)  //depends on command line argument
+    $contents->archive();
 
-
-
-if($filename = EpubMaker::publish($epubContents)){
-    print("epub creation completed => $filename\n");
-    exit(0);
-}
-print("epub creation failed");
-exit(1);
+print("epub creation completed => " . $contents->getFilename() . "\n");
+exit(0);
 
 
 

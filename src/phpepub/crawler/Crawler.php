@@ -1,9 +1,15 @@
 <?php
 
 
-interface Crawler{
+abstract class Crawler{
+
+    protected $resourceString;
+
+    public function __construct($resourceString){
+        $this->resourceString = $resourceString;
+    }
     /*
      *
      */
-    public function crawl($dirname);
+    abstract public function crawl();
 }

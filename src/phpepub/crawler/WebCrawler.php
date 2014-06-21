@@ -1,11 +1,10 @@
 <?php
 
-
-class WebCrawler{
+class WebCrawler extends Crawler{
 
     /*
      *
      */
-    public function crawl($dirname){
+    public function crawl(){
     }
 }

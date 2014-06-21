@@ -4,7 +4,8 @@ spl_autoload_register("loadLibrary");
 
 
 define("DS", "/");
-
+define("ROOT", dirname(__FILE__)."/../");
+define("SMARTY_ROOT", ROOT."res/smarty");
 
 
 

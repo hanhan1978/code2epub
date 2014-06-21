@@ -2,11 +2,13 @@
 
 abstract class Base {
     private $_name;
+    private $_smarty;
     protected $_children = array();
 
 
     public function __construct($name){
         $this->_name = $name;
+        $this->_smarty = new Smarty();
     }
     abstract public function add($file);
     abstract public function getChildren();
@@ -15,7 +17,7 @@ abstract class Base {
     public function getName(){
         return $this->_name;
     }
-
+    /**
     public function dump($indent=0){
         if($indent==0) $this->padPrint($indent, $this->_name);
         foreach($this->_children as $child){
@@ -26,4 +28,5 @@ abstract class Base {
     private function padPrint($indent, $str){
         echo(str_pad("", $indent*3).basename($str)."\n");
     }
+    **/
 }

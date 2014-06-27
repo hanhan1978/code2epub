@@ -17,12 +17,13 @@ class SmartyEntryConverterTest extends PHPUnit_Framework_TestCase{
 
     public function testConvert(){
         $sample1 = $this->nestFileObj->crawl();
-        $obj1 = $sample1->getChildren()[0];
+        $obj0 = $sample1->getChildren()[0];
 
         $smarCon = new SmartyEntryConverter();
-        var_dump($obj1);
-        $this->assertEquals("this is fuga2-1.txt", $smarCon->convert($obj1));
+        $this->assertEquals("this is fuga2-1.txt", trim($smarCon->convert($obj0)));
 
+        $obj1 = $sample1->getChildren()[1];
+        $this->assertTrue(preg_match('|^<\?php|',$smarCon->convert($obj1))==1);
 
     }
 

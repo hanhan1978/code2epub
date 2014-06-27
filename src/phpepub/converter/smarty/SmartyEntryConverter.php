@@ -20,10 +20,17 @@ class SmartyEntryConverter extends EntryConverter {
      * Convert EntryObject into a smarty defined text file
      */
     public function convert($entryObj){
-        return "";
+        $smartyType = SmartyTypeFactory::createSmartyType($entryObj->getPath());
 
+        foreach($smartyType->parseContents($this->getContent($entryObj->getPath())) as $key => $value){
+            $this->_smarty->assign($key, $value);
+        }
+        return $this->_smarty->fetch('entry'.DS.$smartyType->getTemplate());
     }
 
+    private function getContent($filepath){
+        return file_get_Contents($filepath);
+    }
 
 
 }

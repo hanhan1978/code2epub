@@ -1,25 +1,19 @@
 <?php
 
 abstract class AbstractEntry {
-    private $_name;
-    private $_smartyParams; 
+    private $_path;
     protected $_children = array();
 
-    public function __construct($name){
-        $this->_name = $name;
+    public function __construct($path){
+        $this->_path = $path;
     }
 
-    public function getName(){
-        return $this->_name;
-    }
-
-    public function getSmartyParams(){
-        return $this->_smartyParams;
+    public function getPath(){
+        return $this->_path;
     }
 
     abstract public function add($file);
     abstract public function getChildren();
-    abstract public function setSmartyParams();
 
 
 

@@ -12,7 +12,7 @@ class FileCrawler extends Crawler{
      */
     private function crawlImple($dirname){
         if(!is_dir($dirname))
-            return new FileEntry($dirname);
+            return new FileEntry($dirname.DS.$dirname);
         else
             $d=dir($dirname);
 
@@ -22,7 +22,7 @@ class FileCrawler extends Crawler{
             if(is_dir($dirname.DS.$entry))
                 $box->add(self::crawlImple($dirname.DS.$entry)); 
             else
-                $box->add(new FileEntry($entry));
+                $box->add(new FileEntry($dirname.DS.$entry));
         }
         $d->close();
         return $box;

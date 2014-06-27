@@ -1,6 +1,6 @@
 <?php
 
-public class SmartyEntryConverter {
+class SmartyEntryConverter extends EntryConverter {
 
 
     public function __construct(){
@@ -16,8 +16,14 @@ public class SmartyEntryConverter {
     }
 
 
-    public function publish($entryObj){
+    /*
+     * Convert EntryObject into a smarty defined text file
+     */
+    public function convert($entryObj){
+        return "";
 
     }
+
+
 
 }

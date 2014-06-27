@@ -18,9 +18,6 @@ abstract class AbstractEntry {
 
 
 
-    
-
-
 
     /**
     public function dump($indent=0){

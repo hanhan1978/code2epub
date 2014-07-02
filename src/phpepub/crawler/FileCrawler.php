@@ -12,7 +12,7 @@ class FileCrawler extends Crawler{
      */
     private function crawlImple($dirname){
         if(!is_dir($dirname))
-            return new FileEntry($dirname.DS.$dirname);
+            return new FileEntry($dirname);
         else
             $d=dir($dirname);
 

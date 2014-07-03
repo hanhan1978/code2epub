@@ -9,7 +9,7 @@ class EpubMaker{
         $book = new DirectoryEntry(self::getTitle($contents)); 
         $book->add(new FileEntry('mimetype'));
 
-
+        //add metainf => static contents
         $book->add(self::makeMetainf());
         $book->add(self::makeEpub());
 
@@ -26,7 +26,6 @@ class EpubMaker{
         $epub = new DirectoryEntry('EPUB');
         $epub->add(new FileEntry('package.opf'));
         $epub->add(new DirectoryEntry('xhtml'));
-
         return $epub;
     }
 

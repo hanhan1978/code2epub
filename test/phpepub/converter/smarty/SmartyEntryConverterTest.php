@@ -1,7 +1,5 @@
 <?php
 
-
-
 require_once dirname(__FILE__)."/../../../testHelper.php";
 
 class SmartyEntryConverterTest extends PHPUnit_Framework_TestCase{

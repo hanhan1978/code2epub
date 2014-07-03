@@ -12,9 +12,14 @@ abstract class AbstractEntry {
         return $this->_path;
     }
 
+    public function getName(){
+        return basename($this->_path);
+    }
+
     abstract public function add($file);
     abstract public function getChildren();
 
+    
 
 
 

@@ -6,16 +6,32 @@ class EpubMaker{
 
     public static function assemble($contents){
 
-        $epub = new DirectoryEntry($this->getTitle($contents)); 
+        $book = new DirectoryEntry(self::getTitle($contents)); 
+        $book->add(new FileEntry('mimetype'));
 
 
+        $book->add(self::makeMetainf());
+        $book->add(self::makeEpub());
 
-        return $epub;
+        return $book;
 
     }
+    private static function makeMetainf(){
+        $metainf = new DirectoryEntry('META-INF');
+        $metainf->add(new FileEntry('container.xml'));
+        return $metainf;
+    }
 
-    private static getTitle(){
+    private static function makeEpub(){
+        $epub = new DirectoryEntry('EPUB');
+        $epub->add(new FileEntry('package.opf'));
+        $epub->add(new DirectoryEntry('xhtml'));
 
+        return $epub;
+    }
+
+    private static function getTitle($contents){
+        return $contents->getName();
     }
 
 }

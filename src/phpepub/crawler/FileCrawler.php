@@ -10,19 +10,19 @@ class FileCrawler extends Crawler{
     /*
      *
      */
-    private function crawlImple($dirname){
+    private function crawlImple($dirname, $parentName=null){
         if(!is_dir($dirname))
-            return new FileEntry($dirname);
+            return new FileEntry($dirname, $parentName);
         else
             $d=dir($dirname);
 
-        $box = new DirectoryEntry($dirname); 
+        $box = new DirectoryEntry($dirname, $parentName); 
         while($entry = $d->read()){
             if(preg_match("/^\.+$/", $entry)) continue;
             if(is_dir($dirname.DS.$entry))
-                $box->add(self::crawlImple($dirname.DS.$entry)); 
+                $box->add(self::crawlImple($dirname.DS.$entry, $box->getName())); 
             else
-                $box->add(new FileEntry($dirname.DS.$entry));
+                $box->add(new FileEntry($dirname.DS.$entry, $box->getName()));
         }
         $d->close();
         return $box;

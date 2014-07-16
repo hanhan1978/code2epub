@@ -7,25 +7,31 @@ class EpubMaker{
     public static function assemble($contents){
 
         $book = new DirectoryEntry(self::getTitle($contents)); 
-        $book->add(new FileEntry('mimetype'));
+        $book->add(self::makeMimetype());
 
         //add metainf => static contents
         $book->add(self::makeMetainf());
         //add Epub Xhtml very important.
         $book->add(self::makeEpub($contents));
 
-        $epub = new EpubContents($book);
+        $navi = self::makeNavigation($contents);
+//        var_dump($navi);
 
-        $kusoga = self::makeNavigation($contents);
+        return $book;
 
+    }
 
-        return $epub;
-
+    private static function makeMimetype(){
+        $file = new FileEntry('mimetype');
+        $file->setContent(EpubContents::mimetype());
+        return $file;
     }
 
     private static function makeMetainf(){
         $metainf = new DirectoryEntry('META-INF');
-        $metainf->add(new FileEntry('container.xml'));
+        $file = new FileEntry('container.xml');
+        $file->setContent(EpubContents::containerXML());
+        $metainf->add($file);
         return $metainf;
     }
 
@@ -56,31 +62,25 @@ class EpubMaker{
     }
 
     private static function makeNavigation($contents){
-        $block = function($kuso, $contents){
-            if($contents->hasParent()){
-                $kuso[$contents->getParentName()][$contents->getName()] = $contents->getPath();
-            }
-            return $kuso;
-        };
-        
-        $kuso=array();
-        $navi = self::scan($contents, $kuso, $block); 
-        print_r($navi);
-
+        return self::scan($contents); 
     }
 
 
-    private static function scan($contents, $container, $block){
+    private static function scan($contents){
+        $navi = array();
 
         $children = $contents->getChildren();
-        $container = $block($container, $contents);
         if($children === false){
         }else{
             foreach($children as $child){
-                $container = self::scan($child, $container, $block);
+                if($child->getChildren() !==false)
+                    $navi[] = array($child->getName() => self::scan($child));
+                else
+                    $navi[] = $child->getName();
+
             }
         }
-        return $container;
+        return $navi;
 
     }
 

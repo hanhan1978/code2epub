@@ -17,7 +17,7 @@ class FileCrawlerTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals(basename($sample1->getChildren()[2]->getChildren()[2]->getChildren()[1]->getPath()), 'fuga4-2.txt');
         $this->assertEquals(count($sample1->getChildren()), 4);
         $sample2 = $this->singleFileObj->crawl(); 
-        var_dump($sample2);
+//        var_dump($sample2);
         $this->assertEquals(count($sample2), 1);
     }
 

@@ -15,9 +15,8 @@ class EpubMakerTest extends PHPUnit_Framework_TestCase{
 
     public function testAssemble(){
         $sample1 = $this->nestFileObj->crawl();
-        $sample1->dump();
-        $epubContents1 = EpubMaker::assemble($sample1);
-        $book1 = $epubContents1->getBook();
+        //$sample1->dump();
+        $book1 = EpubMaker::assemble($sample1);
         $this->assertEquals("sampleWithNestedContents", $book1->getName());
 
         $this->assertEquals("mimetype", $book1->getChildren()[0]->getName());

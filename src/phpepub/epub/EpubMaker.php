@@ -3,31 +3,36 @@
 
 class EpubMaker{
 
+    private $_contents;
 
-    public static function assemble($contents){
+    //TODO create packageOPF content & navigation, that's all
+    //
+    public function __construct($_contents){
+        $this->_contents = $_contents;
 
-        $book = new DirectoryEntry(self::getTitle($contents)); 
-        $book->add(self::makeMimetype());
+    }
 
-        //add metainf => static contents
-        $book->add(self::makeMetainf());
-        //add Epub Xhtml very important.
-        $book->add(self::makeEpub($contents));
+    public function assemble(){
 
-        $navi = self::makeNavigation($contents);
-//        var_dump($navi);
+        $book = new DirectoryEntry($this->getTitle($this->_contents)); 
+        $book->add($this->makeMimetype());
+
+        $book->add($this->makeMetainf());
+        $book->add($this->makeEpub());
+
+        $navi = $this->makeNavigation();
 
         return $book;
 
     }
 
-    private static function makeMimetype(){
+    private function makeMimetype(){
         $file = new FileEntry('mimetype');
         $file->setContent(EpubContents::mimetype());
         return $file;
     }
 
-    private static function makeMetainf(){
+    private function makeMetainf(){
         $metainf = new DirectoryEntry('META-INF');
         $file = new FileEntry('container.xml');
         $file->setContent(EpubContents::containerXML());
@@ -35,14 +40,22 @@ class EpubMaker{
         return $metainf;
     }
 
-    private static function makeEpub($contents){
+    private function makeEpub(){
         $epub = new DirectoryEntry('EPUB');
-        $epub->add(new FileEntry('package.opf'));
-        $epub->add(self::makeXhtml($contents));
+        $epub->add($this->makePakageOpf());
+        $epub->add($this->makeXhtml($this->_contents));
         return $epub;
     }
 
-    private static function makeXhtml($contents, $container = null){
+    private function makePakageOpf(){
+        $entry = new FileEntry('package.opf');
+        $entry->setContent(EpubContents::packageOPF());
+
+
+        return $entry;
+    }
+
+    private function makeXhtml($contents, $container = null){
         if(is_null($container))
             $container = new DirectoryEntry('xhtml');
         $children = $contents->getChildren();
@@ -50,23 +63,23 @@ class EpubMaker{
             $container->add($contents);
         }else{
             foreach($children as $child){
-                self::makeXhtml($child, $container);
+                $this->makeXhtml($child, $container);
             }
         }
         return $container;
     }
 
 
-    private static function getTitle($contents){
-        return $contents->getName();
+    private function getTitle(){
+        return $this->_contents->getName();
     }
 
-    private static function makeNavigation($contents){
-        return self::scan($contents); 
+    private function makeNavigation(){
+        return $this->scan($this->_contents); 
     }
 
 
-    private static function scan($contents){
+    private function scan($contents){
         $navi = array();
 
         $children = $contents->getChildren();
@@ -74,10 +87,9 @@ class EpubMaker{
         }else{
             foreach($children as $child){
                 if($child->getChildren() !==false)
-                    $navi[] = array($child->getName() => self::scan($child));
+                    $navi[] = array($child->getName() => $this->scan($child));
                 else
                     $navi[] = $child->getName();
-
             }
         }
         return $navi;

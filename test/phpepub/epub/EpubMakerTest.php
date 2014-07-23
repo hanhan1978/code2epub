@@ -16,7 +16,8 @@ class EpubMakerTest extends PHPUnit_Framework_TestCase{
     public function testAssemble(){
         $sample1 = $this->nestFileObj->crawl();
         //$sample1->dump();
-        $book1 = EpubMaker::assemble($sample1);
+        $makerObj = new EpubMaker($sample1);
+        $book1 = $makerObj->assemble();
         $this->assertEquals("sampleWithNestedContents", $book1->getName());
 
         $this->assertEquals("mimetype", $book1->getChildren()[0]->getName());
@@ -34,8 +35,9 @@ class EpubMakerTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals("fuga3-2.txt", $xhtml1->getChildren()[3]->getName());
         $this->assertEquals("fuga4-1.txt", $xhtml1->getChildren()[4]->getName());
         $this->assertEquals("fuga4-2.txt", $xhtml1->getChildren()[5]->getName());
+        $this->assertFalse(isset($xhtml1->getChildren()[6]));
 
-//        $book1->dump();
+        $book1->dump();
 
     }
 

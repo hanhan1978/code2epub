@@ -31,7 +31,7 @@ class FileCrawler extends Crawler{
         $list = array();
         $d=dir($dirname);
         while($entry = $d->read()){
-            if(preg_match("/^\.+$/", $entry)) continue;
+            if(preg_match("/^\..*/", $entry)) continue;
             $list[] = $dirname.DS.$entry;
         }
         $d->close();

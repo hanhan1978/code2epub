@@ -29,18 +29,24 @@ class EpubContents{
       <meta property="dcterms:modified">2012-02-27T16:38:35Z</meta>
    </metadata>
    <manifest>
-      <item href="xhtml/epub30-titlepage.xhtml" id="ttl" media-type="application/xhtml+xml"/>
-      <item href="xhtml/epub30-nav.xhtml" id="nav" media-type="application/xhtml+xml" properties="nav"/>
-      <item href="xhtml/epub30-terminology.xhtml" id="term" media-type="application/xhtml+xml"/>
+      <item href="xhtml/phpepub-navi.xhtml" id="navi" media-type="application/xhtml+xml" properties="nav"/>
+%s
    </manifest>
    <spine>
-      <itemref idref="ttl"/>
-      <itemref idref="nav" linear="no"/>
+      <itemref idref="navi"/>
+%s
    </spine>
 </package>
             ';
+        $manifest = "";
+        $spine = "";
+        foreach($xhtmls as $xhtml){
+            $name = preg_replace('|/|', '_', $xhtml);
+            $manifest .=  '      <item href="xhtml/phpepub-'. $name .'.xhtml" id="'.$name.'" media-type="application/xhtml+xml"/>'."\n";
+            $spine    .=  '      <itemref idref="'.$name.'"/>'."\n";
+        }
 
-        return $template;
+        return sprintf($template, $title, $manifest, $spine);
     }
 
 

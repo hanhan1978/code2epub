@@ -19,6 +19,7 @@ class EpubPublisherTest extends PHPUnit_Framework_TestCase{
 
         $obj = new EpubPublisher($book1);
         $obj->materialize();
+        $book1->dump();
         
     }
 }

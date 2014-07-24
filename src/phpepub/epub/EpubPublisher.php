@@ -14,8 +14,24 @@ class EpubPublisher{
     public function materialize(){
         $this->createTempDir();
 
+        $this->publish(); 
 
-        $this->deleteTempDir();
+    }
+
+    public function publish(){
+        $basedir = $this->_tempdir.DS.$this->_book->getName();
+        mkdir($basedir);
+
+        $children=$this->_book->getChildren();
+
+        foreach($children as $child){
+            if($child->getChildren() === false){
+                $fp = fopen($basedir . DS . $child->getName(), 'w');
+                fwrite($fp, $child->getContent());
+                fclose($fp);
+            }
+        }
+
     }
 
 
@@ -27,25 +43,24 @@ class EpubPublisher{
             $this->_tempdir .= "x";
         }
         mkdir($this->_tempdir);
-        touch($this->_tempdir . DS. "hoge.txt");
-        touch($this->_tempdir . DS. ".hoge.txt");
     }
 
 
     private function deleteTempDir(){
         $this->deleteTempDirImpl($this->_tempdir);
-        rmdir($this->_tempdir);
     }
 
     private function deleteTempDirImpl($dirname){
         $d=dir($dirname);
         while($entry = $d->read()){
-            if(is_file($entry))
-                unlink($entry);
+            if(preg_match("/^\.+$/", $entry)) continue;
+            if(is_dir($dirname.DS.$entry))
+                $this->deleteTempDirImpl($dirname.DS.$entry);
             else
-                $this->deleteTempDirImpl($entry);
+                unlink($dirname.DS.$entry);
         }
         $d->close();
+        rmdir($dirname);
     }
 
 }

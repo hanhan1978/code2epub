@@ -41,20 +41,78 @@ class EpubContents{
         $manifest = "";
         $spine = "";
         foreach($xhtmls as $xhtml){
-            $name = preg_replace('|/|', '_', $xhtml);
-            $manifest .=  '      <item href="xhtml/phpepub-'. $name .'.xhtml" id="'.$name.'" media-type="application/xhtml+xml"/>'."\n";
+            $name = self::replaceSlash($xhtml); 
+            $manifest .=  '      <item href="xhtml/phpepub_'. $name .'.xhtml" id="'.$name.'" media-type="application/xhtml+xml"/>'."\n";
             $spine    .=  '      <itemref idref="'.$name.'"/>'."\n";
         }
 
         return sprintf($template, $title, $manifest, $spine);
     }
+    private static function replaceSlash($str){
+        return preg_replace('|/|', '_', $str);
+    }
 
 
-    public static function navigation(){
-        $template = '';
+    public static function navigation($contents){
+        $template = '
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+<head>
+<meta charset="utf-8"/>
+<title>EPUB 3 Specifications - Table of Contents</title>
+<!--link rel="stylesheet" type="text/css" href="../css/epub-spec.css"/ -->
+</head>
+
+<body>        
+  <nav epub:type="toc" id="toc">
+    <h1 class="title">Table of Contents</h1>    
+%s
+        
+  </nav>
+        
+  <nav epub:type="landmarks" hidden="">
+    <h2>Guide</h2>
+    <ol>
+      <li><a epub:type="toc" href="#toc">Table of Contents</a></li>
+    </ol>
+  </nav>
+</body>
+</html>
+            ';
+
+        $nav = self::makeNavigation($contents);
+        return sprintf($template, $nav);
 
     }
 
+    private static function makeNavigation($contents){
+        return self::scan($contents); 
+    }
+
+
+    private static function scan($contents){
+        $navi = "";
+
+        $children = $contents->getChildren();
+        if($children === false){
+        }else{
+            $navi .= (count($children) > 0)? "    <ol>\n" : "";
+            foreach($children as $child){
+                if($child->getChildren() !==false){
+                    //$navi[] = array($child->getName() => self::scan($child));
+                    $navi .= "    <li>".$child->getName()."\n";
+                    $navi .= self::scan($child);
+                    $navi .= "    </li>\n";
+                }else{
+                    $name = self::replaceSlash($child->getPath());
+                    $navi .= '    <li id="'.$name.'"><a href="phpepub_'.$name.'.xhtml">'.$child->getName().'</a></li>'."\n";
+                }
+            }
+            $navi .= (count($children) > 0)? "    </ol>\n" : "";
+        }
+        return $navi;
+
+    }
 
 
 

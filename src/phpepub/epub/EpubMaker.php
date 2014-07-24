@@ -14,13 +14,12 @@ class EpubMaker{
 
     public function assemble(){
 
-        $book = new DirectoryEntry($this->getTitle($this->_contents)); 
+        $book = new DirectoryEntry($this->getTitle()); 
         $book->add($this->makeMimetype());
 
         $book->add($this->makeMetainf());
         $book->add($this->makeEpub());
 
-        $navi = $this->makeNavigation();
 
         return $book;
 
@@ -39,25 +38,39 @@ class EpubMaker{
         $metainf->add($file);
         return $metainf;
     }
+    private function makeNavi(){
+        $file = new FileEntry('phpepub-navi.xhtml');
+        $file->setContent(EpubContents::navigation($this->_contents));
+        return $file;
+    }
 
     private function makeEpub(){
         $epub = new DirectoryEntry('EPUB');
-        $epub->add($this->makePakageOpf());
-        $epub->add($this->makeXhtml($this->_contents));
+        $xhtml = new DirectoryEntry('xhtml');
+        $xhtml->add( $this->makeNavi()); 
+        $xhtml = $this->makeXhtml($this->_contents, $xhtml );
+        $epub->add($this->makePakageOpf($this->entry2array($xhtml)));
+        $epub->add($xhtml);
         return $epub;
     }
 
-    private function makePakageOpf(){
+    private function entry2array($xhtml){
+        $arr = array();
+        foreach($xhtml->getChildren() as $child){
+            $arr[] = $child->getPath();
+        }
+        return $arr;
+    }
+
+    private function makePakageOpf($xhtml){
         $entry = new FileEntry('package.opf');
-        $entry->setContent(EpubContents::packageOPF());
+        $entry->setContent(EpubContents::packageOPF($this->getTitle(), $xhtml));
 
 
         return $entry;
     }
 
     private function makeXhtml($contents, $container = null){
-        if(is_null($container))
-            $container = new DirectoryEntry('xhtml');
         $children = $contents->getChildren();
         if($children === false){
             $container->add($contents);
@@ -74,26 +87,5 @@ class EpubMaker{
         return $this->_contents->getName();
     }
 
-    private function makeNavigation(){
-        return $this->scan($this->_contents); 
-    }
-
-
-    private function scan($contents){
-        $navi = array();
-
-        $children = $contents->getChildren();
-        if($children === false){
-        }else{
-            foreach($children as $child){
-                if($child->getChildren() !==false)
-                    $navi[] = array($child->getName() => $this->scan($child));
-                else
-                    $navi[] = $child->getName();
-            }
-        }
-        return $navi;
-
-    }
 
 }

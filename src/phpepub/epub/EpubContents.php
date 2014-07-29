@@ -101,6 +101,8 @@ class EpubContents{
 
         $children = $contents->getChildren();
         if($children === false){
+            $name = self::replaceSlash($contents->getPath());
+            $navi .= '   <ol><li id="'.$name.'"><a href="phpepub_'.$name.'.xhtml">'.$contents->getName().'</a></li></ol>'."\n";
         }else{
             $navi .= (count($children) > 0)? "    <ol>\n" : "";
             foreach($children as $child){

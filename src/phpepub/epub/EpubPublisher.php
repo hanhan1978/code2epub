@@ -4,18 +4,19 @@ class EpubPublisher{
 
     private $_book;
 
-    private $_tempdir = ".temp";
+
+    private $_zip = null;
 
     public function __construct($book){
         $this->_book = $book;
+        $this->_zip = new ZipArchive();
     }
 
 
-    public function materialize(){
-        $this->createTempDir();
-
-        $this->publish($this->_tempdir, $this->_book); 
-
+    public function archive(){
+        $this->_zip->open($this->_book->getName().".epub", ZipArchive::OVERWRITE);
+        $this->publish("", $this->_book); 
+        $this->_zip->close();
     }
 
     public function publish($basedir, $entry){
@@ -24,62 +25,28 @@ class EpubPublisher{
         if($children === false){
             $this->createFile($basedir, $entry);
         }else{
+
+            $path = $basedir === "" ? $entry->getName() : $basedir . DS . $entry->getName();
+            $this->_zip->addEmptyDir($path);
+
             foreach($children as $child){
-                $this->publish($basedir . DS . $entry->getName(), $child);
+                $this->publish($path, $child);
             }
         }
     }
 
 
-    public function archive(){
-
-    }
-
-
-
     private function createFile($dir, $child){
-        if(!is_dir($dir)){
-            mkdir($dir);
-        }
         if(!$content = $child->getContent()){
             $content = EpubContents::singleFile(basename($child->getPath()),file_get_contents($child->getPath()) );
             if(empty(trim($content)))
                 $content = '(empty file)';
             $content = nl2br($content);
+            $content = preg_replace('| |', '&nbsp;', $content);
         }
 
-        $fp = fopen($dir . DS . $child->getName(), 'w');
-        fwrite($fp, $content);
-        fclose($fp);
-    }
-
-
-    private function createTempDir(){
-        while(true){
-            if(!is_dir($this->_tempdir)){
-                break;
-            }
-            $this->_tempdir .= "x";
-        }
-        mkdir($this->_tempdir);
-    }
-
-
-    private function deleteTempDir(){
-        $this->deleteTempDirImpl($this->_tempdir);
-    }
-
-    private function deleteTempDirImpl($dirname){
-        $d=dir($dirname);
-        while($entry = $d->read()){
-            if(preg_match("/^\.+$/", $entry)) continue;
-            if(is_dir($dirname.DS.$entry))
-                $this->deleteTempDirImpl($dirname.DS.$entry);
-            else
-                unlink($dirname.DS.$entry);
-        }
-        $d->close();
-        rmdir($dirname);
+        $path = $dir === "" ? $child->getName() : $dir . DS. $child->getName();
+        $this->_zip->addFromString($path, $content);
     }
 
 }

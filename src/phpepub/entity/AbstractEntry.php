@@ -3,6 +3,7 @@
 abstract class AbstractEntry {
     private $_path;
     private $_parentName;
+    private $_name = null;
     protected $_children = array();
     
 
@@ -16,7 +17,14 @@ abstract class AbstractEntry {
     }
 
     public function getName(){
-        return basename($this->_path);
+        if(is_null($this->_name))
+            return basename($this->_path);
+        else
+            return $this->_name;
+    }
+
+    public function setName($name){
+        $this->_name = $name;
     }
 
     public function hasParent(){

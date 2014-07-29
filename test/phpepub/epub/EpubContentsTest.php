@@ -24,7 +24,6 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
     public function testNavigation(){
         $sample1 = $this->nestFileObj->crawl();
         $navigation = EpubContents::navigation($sample1);
-        
         $this->assertEquals(1, preg_match('|<li>hoge2-1|u', $navigation));
         $this->assertEquals(1, preg_match('|fuga2-2.php</a></li>|u', $navigation));
         $this->assertEquals(1, preg_match('|<li>hoge2-2\n    </li>|us', $navigation));

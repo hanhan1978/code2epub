@@ -64,6 +64,7 @@ class EpubMaker{
 
     private function makePakageOpf($xhtml){
         $entry = new FileEntry('package.opf');
+        array_shift($xhtml);
         $entry->setContent(EpubContents::packageOPF($this->getTitle(), $xhtml));
 
 
@@ -73,6 +74,7 @@ class EpubMaker{
     private function makeXhtml($contents, $container = null){
         $children = $contents->getChildren();
         if($children === false){
+            $contents->setName(EpubContents::createFileName($contents->getPath()));
             $container->add($contents);
         }else{
             foreach($children as $child){

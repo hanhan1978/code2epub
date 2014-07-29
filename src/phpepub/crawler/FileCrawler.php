@@ -32,10 +32,17 @@ class FileCrawler extends Crawler{
         $d=dir($dirname);
         while($entry = $d->read()){
             if(preg_match("/^\..*/", $entry)) continue;
-            $list[] = $dirname.DS.$entry;
+            $list[] = $this->appendSlash($dirname).$entry;
         }
         $d->close();
         sort($list);
         return $list;
+    }
+
+
+    private function appendSlash($dirname){
+        if(preg_match("|/$|", $dirname))
+            return $dirname;
+        return $dirname.DS;
     }
 }

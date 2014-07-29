@@ -14,24 +14,43 @@ class EpubPublisher{
     public function materialize(){
         $this->createTempDir();
 
-        $this->publish(); 
+        $this->publish($this->_tempdir, $this->_book); 
 
     }
 
-    public function publish(){
-        $basedir = $this->_tempdir.DS.$this->_book->getName();
-        mkdir($basedir);
+    public function publish($basedir, $entry){
+        $children=$entry->getChildren();
 
-        $children=$this->_book->getChildren();
-
-        foreach($children as $child){
-            if($child->getChildren() === false){
-                $fp = fopen($basedir . DS . $child->getName(), 'w');
-                fwrite($fp, $child->getContent());
-                fclose($fp);
+        if($children === false){
+            $this->createFile($basedir, $entry);
+        }else{
+            foreach($children as $child){
+                $this->publish($basedir . DS . $entry->getName(), $child);
             }
         }
+    }
 
+
+    public function archive(){
+
+    }
+
+
+
+    private function createFile($dir, $child){
+        if(!is_dir($dir)){
+            mkdir($dir);
+        }
+        if(!$content = $child->getContent()){
+            $content = EpubContents::singleFile(basename($child->getPath()),file_get_contents($child->getPath()) );
+            if(empty(trim($content)))
+                $content = '(empty file)';
+            $content = nl2br($content);
+        }
+
+        $fp = fopen($dir . DS . $child->getName(), 'w');
+        fwrite($fp, $content);
+        fclose($fp);
     }
 
 

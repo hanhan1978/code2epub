@@ -3,10 +3,10 @@ require_once("../src/autoload.php");
 
 
 //command line argument compile  && argument validation 
-$argObj = new Argument($argv);
-if(!$argObj->validate() || $argObj->needHelp()){
-    $argObj->showMessage();
-    exit(1);
+//$argObj = new Argument($argv);
+//if(!$argObj->validate() || $argObj->needHelp()){
+//    $argObj->showMessage();
+//    exit(1);
     /** memo
     argument
        --no-archive    => do not archive epub
@@ -17,19 +17,30 @@ if(!$argObj->validate() || $argObj->needHelp()){
 
        TODO:Think about use of Symfony console library that sounds good
     **/
-}
+//}
 
 //EPUB Contents Collection
-$epubContents = CrawlerFactory::createCrawler()->crawl();
+//$epubContents = CrawlerFactory::createCrawler()->crawl();
 
 //EPUB Contents Publish (without zip archive if specified)
 //
-$contents = EpubMaker::assemble($eputContents);
+//$contents = EpubMaker::assemble($eputContents);
 
-if(true)  //depends on command line argument
-    $contents->archive();
+//if(true)  //depends on command line argument
+//    $contents->archive();
+//
+//
 
-print("epub creation completed => " . $contents->getFilename() . "\n");
+
+$crawler = CrawlerFactory::createCrawler($argv[1]);
+$source = $crawler->crawl();
+$maker = new EpubMaker($source);
+$book = $maker->assemble();
+
+$publisher = new EpubPublisher($book);
+$publisher->materialize();
+
+//print("epub creation completed => " . $contents->getFilename() . "\n");
 exit(0);
 
 

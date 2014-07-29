@@ -8,7 +8,7 @@ class EpubContents{
     }
 
     public static function containerXml(){
-        $con = ' <?xml version="1.0" encoding="UTF-8"?>
+        $con = '<?xml version="1.0" encoding="UTF-8"?>
 <container xmlns="urn:oasis:names:tc:opendocument:xmlns:container" version="1.0">
    <rootfiles>
       <rootfile full-path="EPUB/package.opf" media-type="application/oebps-package+xml"/>
@@ -18,8 +18,7 @@ class EpubContents{
     }
 
     public static function packageOPF($title, $xhtmls){
-        $template = '
-<?xml version="1.0" encoding="UTF-8"?>
+        $template = '<?xml version="1.0" encoding="UTF-8"?>
 <package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="uid">
    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
       <dc:identifier id="uid">code.google.com.epub-samples.epub30-spec</dc:identifier>
@@ -41,21 +40,28 @@ class EpubContents{
         $manifest = "";
         $spine = "";
         foreach($xhtmls as $xhtml){
-            $name = self::replaceSlash($xhtml); 
-            $manifest .=  '      <item href="xhtml/phpepub_'. $name .'.xhtml" id="'.$name.'" media-type="application/xhtml+xml"/>'."\n";
-            $spine    .=  '      <itemref idref="'.$name.'"/>'."\n";
+            $filename = self::createFileName($xhtml); 
+            $id = self::createId($xhtml);
+            $manifest .=  '      <item href="xhtml/'.$filename.'" id="'.$id.'" media-type="application/xhtml+xml"/>'."\n";
+            $spine    .=  '      <itemref idref="'.$id.'"/>'."\n";
         }
 
         return sprintf($template, $title, $manifest, $spine);
     }
     private static function replaceSlash($str){
-        return preg_replace('|/|', '_', $str);
+        return preg_replace('|[/\.]|', '_', $str);
+    }
+
+    public static function createFileName($str){
+        return "phpepub_".self::replaceSlash($str).".xhtml";
+    }
+    private static function createId($str){
+        return self::replaceSlash($str);
     }
 
 
     public static function navigation($contents){
-        $template = '
-<?xml version="1.0" encoding="utf-8"?>
+        $template = '<?xml version="1.0" encoding="utf-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
 <head>
 <meta charset="utf-8"/>
@@ -111,6 +117,29 @@ class EpubContents{
             $navi .= (count($children) > 0)? "    </ol>\n" : "";
         }
         return $navi;
+
+    }
+
+    public static function singleFile($name, $source){
+        $template = '<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8"/>
+<title>%s</title>
+<!--link rel="stylesheet" type="text/css" href="../css/epub-spec.css"/-->
+</head>
+
+
+
+<body>
+%s
+</body>
+</html>
+            ';
+
+        return sprintf($template, htmlspecialchars($name), htmlspecialchars($source));
 
     }
 

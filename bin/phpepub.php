@@ -1,5 +1,6 @@
+#!/usr/bin/env php
 <?php
-require_once("../src/autoload.php");
+require_once(dirname(__FILE__)."/../src/autoload.php");
 
 
 //command line argument compile  && argument validation 
@@ -36,9 +37,10 @@ $crawler = CrawlerFactory::createCrawler($argv[1]);
 $source = $crawler->crawl();
 $maker = new EpubMaker($source);
 $book = $maker->assemble();
+$book->dump();
 
 $publisher = new EpubPublisher($book);
-$publisher->materialize();
+$publisher->archive();
 
 //print("epub creation completed => " . $contents->getFilename() . "\n");
 exit(0);

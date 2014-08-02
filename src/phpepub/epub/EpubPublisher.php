@@ -38,8 +38,8 @@ class EpubPublisher{
 
     private function createFile($dir, $child){
         if(!$content = $child->getContent()){
-            $content = EpubContents::singleFile(basename($child->getPath()),file_get_contents($child->getPath()) );
-            if(empty(trim($content)))
+            $content = trim(EpubContents::singleFile(basename($child->getPath()),file_get_contents($child->getPath()) ));
+            if(empty($content))
                 $content = '(empty file)';
             $content = nl2br($content);
             $content = preg_replace('| |', '&nbsp;', $content);

@@ -4,12 +4,13 @@
 class EpubMaker{
 
     private $_contents;
+    private $_epub;
 
     //TODO create packageOPF content & navigation, that's all
     //
     public function __construct($_contents){
         $this->_contents = $_contents;
-
+        $this->_epub = new EpubContents();
     }
 
     public function assemble(){
@@ -27,20 +28,20 @@ class EpubMaker{
 
     private function makeMimetype(){
         $file = new FileEntry('mimetype');
-        $file->setContent(EpubContents::mimetype());
+        $file->setContent($this->_epub->mimetype());
         return $file;
     }
 
     private function makeMetainf(){
         $metainf = new DirectoryEntry('META-INF');
         $file = new FileEntry('container.xml');
-        $file->setContent(EpubContents::containerXML());
+        $file->setContent($this->_epub->containerXML());
         $metainf->add($file);
         return $metainf;
     }
     private function makeNavi(){
         $file = new FileEntry('phpepub-navi.xhtml');
-        $file->setContent(EpubContents::navigation($this->_contents));
+        $file->setContent($this->_epub->navigation($this->_contents));
         return $file;
     }
 
@@ -65,7 +66,7 @@ class EpubMaker{
     private function makePakageOpf($xhtml){
         $entry = new FileEntry('package.opf');
         array_shift($xhtml);
-        $entry->setContent(EpubContents::packageOPF($this->getTitle(), $xhtml));
+        $entry->setContent($this->_epub->packageOPF($this->getTitle(), $xhtml));
 
 
         return $entry;
@@ -74,7 +75,7 @@ class EpubMaker{
     private function makeXhtml($contents, $container = null){
         $children = $contents->getChildren();
         if($children === false){
-            $contents->setName(EpubContents::createFileName($contents->getPath()));
+            $contents->setName($this->_epub->createFileName($contents->getPath()));
             $container->add($contents);
         }else{
             foreach($children as $child){

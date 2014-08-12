@@ -6,15 +6,18 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
 
     private $nestFileObj;
     private $singleFileObj;
+    private $_epub;
 
     function setup(){
         $this->nestFileObj   = CrawlerFactory::createCrawler(TEST_ROOT."/res/sampleWithNestedContents");
         $this->singleFileObj = CrawlerFactory::createCrawler(TEST_ROOT."/res/sampleOnlyOneFile/fuga.txt");
+        $this->_epub = new EpubContents();
     }
 
     public function testPakageOPF(){
+
         $xhtmls = array('page1', 'hoge/page2', 'page3');
-        $packageOPF = EpubContents::packageOPF('titletest', $xhtmls);
+        $packageOPF = $this->_epub->packageOPF('titletest', $xhtmls);
 
         $this->assertEquals(1, preg_match('|<dc:title>titletest</dc:title>|u', $packageOPF));
         $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub_page1.xhtml" id="page1"|', $packageOPF));
@@ -23,13 +26,13 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
 
     public function testNavigation(){
         $sample1 = $this->nestFileObj->crawl();
-        $navigation = EpubContents::navigation($sample1);
+        $navigation = $this->_epub->navigation($sample1);
         $this->assertEquals(1, preg_match('|<li>hoge2-1|u', $navigation));
         $this->assertEquals(1, preg_match('|fuga2-2.php</a></li>|u', $navigation));
         $this->assertEquals(1, preg_match('|<li>hoge2-2\n    </li>|us', $navigation));
 
         $sample2 = $this->singleFileObj->crawl();
-        $navigation = EpubContents::navigation($sample2);
+        $navigation = $this->_epub->navigation($sample2);
         $this->assertEquals(1, preg_match('|fuga.txt</a>|u', $navigation));
     }
 }

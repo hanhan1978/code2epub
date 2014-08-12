@@ -5,9 +5,8 @@ spl_autoload_register("loadLibrary");
 
 define("DS", "/");
 define("ROOT", dirname(__FILE__)."/../");
-define("SMARTY_TEMPLATE_ROOT", ROOT."res/smarty/");
 
-
+require_once ROOT.'vendor/autoload.php';
 
 /*
  * Autoloader for phpepub

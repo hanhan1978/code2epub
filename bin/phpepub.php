@@ -37,7 +37,7 @@ $crawler = CrawlerFactory::createCrawler($argv[1]);
 $source = $crawler->crawl();
 $maker = new EpubMaker($source);
 $book = $maker->assemble();
-$book->dump();
+//$book->dump();
 
 $publisher = new EpubPublisher($book);
 $publisher->archive();

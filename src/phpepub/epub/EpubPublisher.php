@@ -3,6 +3,7 @@
 class EpubPublisher{
 
     private $_book;
+    private $_epub;
 
 
     private $_zip = null;
@@ -10,6 +11,7 @@ class EpubPublisher{
     public function __construct($book){
         $this->_book = $book;
         $this->_zip = new ZipArchive();
+        $this->_epub = new EpubContents();
     }
 
 
@@ -38,7 +40,7 @@ class EpubPublisher{
 
     private function createFile($dir, $child){
         if(!$content = $child->getContent()){
-            $content = trim(EpubContents::singleFile(basename($child->getPath()),file_get_contents($child->getPath()) ));
+            $content = trim($this->_epub->singleFile(basename($child->getPath()),file_get_contents($child->getPath()) ));
             if(empty($content))
                 $content = '(empty file)';
             $content = nl2br($content);

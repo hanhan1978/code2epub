@@ -2,103 +2,47 @@
 
 class EpubContents{
 
+    private $_twig;
 
-    public static function mimetype(){
-        return "application/epub+zip";
+    public function __construct(){
+        $loader = new Twig_Loader_Filesystem(ROOT.'res/twig/templates');
+        $this->_twig = new Twig_Environment($loader);
     }
 
-    public static function containerXml(){
-        $con = '<?xml version="1.0" encoding="UTF-8"?>
-<container xmlns="urn:oasis:names:tc:opendocument:xmlns:container" version="1.0">
-   <rootfiles>
-      <rootfile full-path="EPUB/package.opf" media-type="application/oebps-package+xml"/>
-   </rootfiles>
-</container>';
-        return $con;
+    public function mimetype(){
+        return $this->_twig->render('mimetype', array(''));
     }
 
-    public static function packageOPF($title, $xhtmls){
-        $template = '<?xml version="1.0" encoding="UTF-8"?>
-<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="uid">
-   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
-      <dc:identifier id="uid">code.google.com.epub-samples.epub30-spec</dc:identifier>
-      <dc:title>%s</dc:title>
-      <dc:creator>PHP EPUB CREATOR</dc:creator>
-      <dc:language>en</dc:language>
-      <meta property="dcterms:modified">2012-02-27T16:38:35Z</meta>
-   </metadata>
-   <manifest>
-      <item href="xhtml/phpepub-navi.xhtml" id="navi" media-type="application/xhtml+xml" properties="nav"/>
-%s
-   </manifest>
-   <spine>
-      <itemref idref="navi"/>
-%s
-   </spine>
-</package>
-            ';
-        $manifest = "";
-        $spine = "";
+    public function containerXml(){
+        return $this->_twig->render('container.xml', array(''));
+    }
+
+    public function packageOPF($title, $xhtmls){
+        $files = array();
         foreach($xhtmls as $xhtml){
-            $filename = self::createFileName($xhtml); 
-            $id = self::createId($xhtml);
-            $manifest .=  '      <item href="xhtml/'.$filename.'" id="'.$id.'" media-type="application/xhtml+xml"/>'."\n";
-            $spine    .=  '      <itemref idref="'.$id.'"/>'."\n";
+            $files[] = array('name' => self::createFileName($xhtml) , 'id' => self::createId($xhtml));
         }
-
-        return sprintf($template, $title, $manifest, $spine);
+        return $this->_twig->render('package.opf', array('title' => $title, 'files' => $files));
     }
-    private static function replaceSlash($str){
+    private function replaceSlash($str){
         return preg_replace('|[/\.]|', '_', $str);
     }
 
-    public static function createFileName($str){
+    public function createFileName($str){
         return "phpepub_".self::replaceSlash($str).".xhtml";
     }
-    private static function createId($str){
+    private function createId($str){
         return self::replaceSlash($str);
     }
 
 
-    public static function navigation($contents){
-        $template = '<?xml version="1.0" encoding="utf-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
-<head>
-<meta charset="utf-8"/>
-<title>EPUB 3 Specifications - Table of Contents</title>
-<!--link rel="stylesheet" type="text/css" href="../css/epub-spec.css"/ -->
-</head>
-
-<body>        
-  <nav epub:type="toc" id="toc">
-    <h1 class="title">Table of Contents</h1>    
-%s
-        
-  </nav>
-        
-  <nav epub:type="landmarks" hidden="">
-    <h2>Guide</h2>
-    <ol>
-      <li><a epub:type="toc" href="#toc">Table of Contents</a></li>
-    </ol>
-  </nav>
-</body>
-</html>
-            ';
-
+    public function navigation($contents){
         $nav = self::makeNavigation($contents);
-        return sprintf($template, $nav);
-
+        return $this->_twig->render('navigation.xhtml', array('navi' => $nav));
     }
 
-    private static function makeNavigation($contents){
-        return self::scan($contents); 
-    }
-
-
-    private static function scan($contents){
+    private function makeNavigation($contents){
         $navi = "";
-
         $children = $contents->getChildren();
         if($children === false){
             $name = self::replaceSlash($contents->getPath());
@@ -107,9 +51,8 @@ class EpubContents{
             $navi .= (count($children) > 0)? "    <ol>\n" : "";
             foreach($children as $child){
                 if($child->getChildren() !==false){
-                    //$navi[] = array($child->getName() => self::scan($child));
                     $navi .= "    <li>".$child->getName()."\n";
-                    $navi .= self::scan($child);
+                    $navi .= self::makeNavigation($child);
                     $navi .= "    </li>\n";
                 }else{
                     $name = self::replaceSlash($child->getPath());
@@ -122,27 +65,8 @@ class EpubContents{
 
     }
 
-    public static function singleFile($name, $source){
-        $template = '<?xml version="1.0" encoding="utf-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-
-<meta charset="utf-8"/>
-<title>%s</title>
-<!--link rel="stylesheet" type="text/css" href="../css/epub-spec.css"/-->
-</head>
-
-
-
-<body>
-%s
-</body>
-</html>
-            ';
-
-        return sprintf($template, htmlspecialchars($name), htmlspecialchars($source));
-
+    public function singleFile($title, $source){
+        return $this->_twig->render('base.xhtml', array('title' => $title, 'source' => $source));
     }
 
 

@@ -21,28 +21,14 @@ require_once(dirname(__FILE__)."/../src/autoload.php");
 //}
 
 //EPUB Contents Collection
-//$epubContents = CrawlerFactory::createCrawler()->crawl();
-
-//EPUB Contents Publish (without zip archive if specified)
-//
-//$contents = EpubMaker::assemble($eputContents);
-
-//if(true)  //depends on command line argument
-//    $contents->archive();
-//
-//
-
-
 $crawler = CrawlerFactory::createCrawler($argv[1]);
 $source = $crawler->crawl();
 $maker = new EpubMaker($source);
 $book = $maker->assemble();
-//$book->dump();
 
 $publisher = new EpubPublisher($book);
 $publisher->archive();
 
-//print("epub creation completed => " . $contents->getFilename() . "\n");
 exit(0);
 
 

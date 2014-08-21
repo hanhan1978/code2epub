@@ -11,6 +11,10 @@
 
 
 <body>
-{{ source }}
+<div style="font-size:10px">
+{% autoescape false %} 
+{{ source | raw }}
+{% endautoescape %}
+</div>
 </body>
 </html>

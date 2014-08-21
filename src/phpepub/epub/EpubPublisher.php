@@ -43,8 +43,6 @@ class EpubPublisher{
             $content = trim($this->_epub->singleFile(basename($child->getPath()),file_get_contents($child->getPath()) ));
             if(empty($content))
                 $content = '(empty file)';
-            $content = nl2br($content);
-            $content = preg_replace('| |', '&nbsp;', $content);
         }
 
         $path = $dir === "" ? $child->getName() : $dir . DS. $child->getName();

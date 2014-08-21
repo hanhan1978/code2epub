@@ -66,7 +66,23 @@ class EpubContents{
     }
 
     public function singleFile($title, $source){
-        return $this->_twig->render('base.xhtml', array('title' => $title, 'source' => $source));
+        return $this->_twig->render('base.xhtml', array('title' => $title, 'source' => $this->editSource($source)));
+    }
+
+
+    private function editSource($source){
+        $source = htmlentities($source);
+        $source = preg_replace("/\t/", '    ', $source);
+
+        $lines = preg_split("/[\r\n]+/", $source);
+
+        $edited="";
+        $num=1;
+        foreach($lines as $line){
+            $edited .= "<span style='margin-right:15px'>". $num++ . "</span>" . $line . "\n";
+        }
+        $edited = preg_replace("/ /", '&nbsp;', $edited);
+        return nl2br($edited);
     }
 
 

@@ -75,13 +75,13 @@ class EpubContents{
         $source = preg_replace("/\t/", '    ', $source);
 
         $lines = preg_split("/[\r\n]+/", $source);
+        $lines = preg_replace("/ /", '&#160;', $lines);
 
         $edited="";
         $num=1;
         foreach($lines as $line){
             $edited .= "<span style='margin-right:15px'>". $num++ . "</span>" . $line . "\n";
         }
-        $edited = preg_replace("/ /", '&nbsp;', $edited);
         return nl2br($edited);
     }
 

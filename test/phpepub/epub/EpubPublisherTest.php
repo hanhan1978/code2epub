@@ -29,5 +29,12 @@ class EpubPublisherTest extends PHPUnit_Framework_TestCase{
 
         $this->assertEquals( true, is_file("fuga.txt.epub"));
     }
+
+    function teardown(){
+        if(is_file("fuga.txt.epub"))
+            unlink("fuga.txt.epub");
+        if(is_file("sampleWithNestedContents.epub"))
+            unlink("sampleWithNestedContents.epub");
+    }
 }
 

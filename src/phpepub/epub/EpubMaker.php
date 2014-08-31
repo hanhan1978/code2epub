@@ -17,7 +17,6 @@ class EpubMaker{
 
         $book = new DirectoryEntry($this->getTitle()); 
         $book->add($this->makeMimetype());
-
         $book->add($this->makeMetainf());
         $book->add($this->makeEpub());
 

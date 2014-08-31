@@ -6,11 +6,13 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
 
     private $nestFileObj;
     private $singleFileObj;
+    private $xhtmlCheckObj;
     private $_epub;
 
     function setup(){
-        $this->nestFileObj   = CrawlerFactory::createCrawler(TEST_ROOT."/res/sampleWithNestedContents");
-        $this->singleFileObj = CrawlerFactory::createCrawler(TEST_ROOT."/res/sampleOnlyOneFile/fuga.txt");
+        $this->xhtmlCheckObj   = CrawlerFactory::createCrawler(TEST_ROOT."/res/sampleForXhtmlCheck");
+        $this->nestFileObj     = CrawlerFactory::createCrawler(TEST_ROOT."/res/sampleWithNestedContents");
+        $this->singleFileObj   = CrawlerFactory::createCrawler(TEST_ROOT."/res/sampleOnlyOneFile/fuga.txt");
         $this->_epub = new EpubContents();
     }
 
@@ -34,6 +36,18 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
         $sample2 = $this->singleFileObj->crawl();
         $navigation = $this->_epub->navigation($sample2);
         $this->assertEquals(1, preg_match('|fuga.txt</a>|u', $navigation));
+    }
+
+    public function testSingleFileXhtmlConversion(){
+        $sample1 = $this->xhtmlCheckObj->crawl();
+        $makerObj1 = new EpubMaker($sample1);
+        $book1 = $makerObj1->assemble();
+
+        $sampleXhtml3 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[1];
+        $sampleXhtml2 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[2];
+        $sampleXhtml1 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[3];
+        $content = trim($this->_epub->singleFile(basename($sampleXhtml1->getPath()),file_get_contents($sampleXhtml1->getPath()) ));
+        $this->assertEquals(1, preg_match("|<span style='margin-right:15px'>1</span>&lt;\?php<br />|", $content));
     }
 }
 

@@ -7,12 +7,14 @@
 </head>
 
 <body>        
+  <div style="font-size:10px">
   <nav epub:type="toc" id="toc">
     <h1 class="title">Table of Contents</h1>    
     {% autoescape false %} 
     {{ navi }}
     {% endautoescape %}
   </nav>
+  </div>
         
   <nav epub:type="landmarks" hidden="">
     <h2>Guide</h2>

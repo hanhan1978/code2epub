@@ -34,6 +34,7 @@ class EpubMakerTest extends PHPUnit_Framework_TestCase{
         $epub1 = $book1->getChildren()[2];
         $this->assertEquals("package.opf", $epub1->getChildren()[0]->getName());
         $this->assertEquals("xhtml", $epub1->getChildren()[1]->getName());
+        $this->assertEquals("css", $epub1->getChildren()[2]->getName());
 
         $xhtml1 = $epub1->getChildren()[1];
         $this->assertEquals("phpepub-navi.xhtml", $xhtml1->getChildren()[0]->getName());
@@ -44,6 +45,9 @@ class EpubMakerTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals($this->_epub->createFileName($this->_nestFilePath."hoge2-1/hoge3-1/fuga4-1.txt"), $xhtml1->getChildren()[5]->getName());
         $this->assertEquals($this->_epub->createFileName($this->_nestFilePath."hoge2-1/hoge3-1/fuga4-2.txt"), $xhtml1->getChildren()[6]->getName());
         $this->assertFalse(isset($xhtml1->getChildren()[7]));
+
+        $css1 = $epub1->getChildren()[2];
+        $this->assertEquals("style.css", $css1->getChildren()[0]->getName());
 
         $sample2 = $this->singleFileObj->crawl();
         $makerObj2 = new EpubMaker($sample2);

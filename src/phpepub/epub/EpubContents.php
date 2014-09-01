@@ -35,6 +35,9 @@ class EpubContents{
         return self::replaceSlash($str);
     }
 
+    public function styleCss(){
+        return $this->_twig->render('style.css', array(''));
+    }
 
     public function navigation($contents){
         $nav = self::makeNavigation($contents);
@@ -66,7 +69,7 @@ class EpubContents{
     }
 
     public function singleFile($title, $source){
-        return $this->_twig->render('base.xhtml', array('title' => $title, 'source' => $this->editSource($source)));
+        return $this->_twig->render('base.xhtml', array('title' => $title, 'lines' => $this->editSource($source)));
     }
 
 
@@ -77,12 +80,7 @@ class EpubContents{
         $lines = preg_split("/[\r\n]+/", $source);
         $lines = preg_replace("/ /", '&#160;', $lines);
 
-        $edited="";
-        $num=1;
-        foreach($lines as $line){
-            $edited .= "<span style='margin-right:15px'>". $num++ . "</span>" . $line . "\n";
-        }
-        return nl2br($edited);
+        return $lines; 
     }
 
 

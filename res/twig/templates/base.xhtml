@@ -2,19 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-
 <meta charset="utf-8"/>
 <title>{{ title }}</title>
-<!--link rel="stylesheet" type="text/css" href="../css/epub-spec.css"/-->
+<link rel="stylesheet" type="text/css" href="../css/style.css"/>
 </head>
 
-
-
 <body>
-    <div style="font-size:10px;font-weight:bold;text-align:center;width:100%;">-- {{title}} --</div>
-<div style="font-size:10px">
+<div class='file-title'>-- {{title}} --</div>
+<div class='container'>
 {% autoescape false %} 
-{{ source | raw }}
+  {% for line in lines %}
+  <div class='line-number'>{{ loop.index }}</div>{{ line | raw }}<br/>
+  {% endfor %}
 {% endautoescape %}
 </div>
 </body>

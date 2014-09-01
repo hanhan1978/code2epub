@@ -44,6 +44,12 @@ class EpubMaker{
         return $file;
     }
 
+    private function makeCss(){
+        $file = new FileEntry('style.css');
+        $file->setContent($this->_epub->styleCss());
+        return $file;
+    }
+
     private function makeEpub(){
         $epub = new DirectoryEntry('EPUB');
         $xhtml = new DirectoryEntry('xhtml');
@@ -51,6 +57,11 @@ class EpubMaker{
         $xhtml = $this->makeXhtml($this->_contents, $xhtml );
         $epub->add($this->makePakageOpf($this->entry2array($xhtml)));
         $epub->add($xhtml);
+
+        $css = new DirectoryEntry('css');
+        $css->add($this->makeCss());
+        $epub->add($css);
+
         return $epub;
     }
 

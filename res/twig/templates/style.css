@@ -1,0 +1,18 @@
+
+div.line-number {
+    width:26px;
+    float:left;
+    text-align:center;
+}
+
+
+div.file-title {
+    font-size:10px;
+    font-weight:bold;
+    text-align:center;
+    width:100%;
+}
+
+div.container {
+    font-size:10px
+}

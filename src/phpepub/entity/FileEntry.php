@@ -3,6 +3,7 @@
 class FileEntry extends AbstractEntry {
 
     private $_content = null;
+    private $_template = false;
 
     public function getContent(){
         return $this->_content;
@@ -17,5 +18,18 @@ class FileEntry extends AbstractEntry {
 
     public function getChildren(){
         return false;
+    }
+
+    /**
+     *  if FileEntry is templatable.
+     *  it means the file has a corresponding twig template. 
+     **/
+    public function templatable(){
+        $this->_template = true; 
+        return $this;
+    }
+
+    public function hasTemplate(){
+        return $this->_template;
     }
 }

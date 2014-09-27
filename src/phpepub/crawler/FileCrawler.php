@@ -39,7 +39,6 @@ class FileCrawler extends Crawler{
         return $list;
     }
 
-
     private function appendSlash($dirname){
         if(preg_match("|/$|", $dirname))
             return $dirname;

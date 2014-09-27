@@ -43,6 +43,11 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
         $makerObj1 = new EpubMaker($sample1);
         $book1 = $makerObj1->assemble();
 
+
+        $mimetype = $book1->getChildren()[0];
+        //$content = trim($this->_epub->singleFile(basename($sampleXhtml1->getPath()),file_get_contents($sampleXhtml1->getPath()) ));
+
+
         $sampleXhtml3 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[1];
         $sampleXhtml2 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[2];
         $sampleXhtml1 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[3];

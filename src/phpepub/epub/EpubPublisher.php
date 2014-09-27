@@ -37,14 +37,33 @@ class EpubPublisher{
         }
     }
 
+    /**
+     *  Create epub content from twig template
+     * */
+    private function getTempalteContent($child){
+        $filename = str_replace(' ', '', lcfirst(ucwords(str_replace('.', ' ', $child->getName()))));
+        return $this->_epub->$filename();
+    }
+
+    /**
+     *  Create XHTML epub content from a real file
+     */
+    private function getRealFileContent($child){
+        $content = trim($this->_epub->singleFile(basename($child->getPath()),file_get_contents($child->getPath()) ));
+        if(empty($content))
+            $content = '(empty file)';
+        return $content;
+    }
+
 
     private function createFile($dir, $child){
-        if(!$content = $child->getContent()){
-            $content = trim($this->_epub->singleFile(basename($child->getPath()),file_get_contents($child->getPath()) ));
-            if(empty($content))
-                $content = '(empty file)';
+        if($child->hasTemplate()){
+            $content = $this->getTempalteContent($child);
+        }else if($child->getContent()){
+            $content = $child->getContent();
+        }else{
+            $content = $this->getRealFileContent($child);
         }
-
         $path = $dir === "" ? $child->getName() : $dir . DS. $child->getName();
         $this->_zip->addFromString($path, $content);
     }

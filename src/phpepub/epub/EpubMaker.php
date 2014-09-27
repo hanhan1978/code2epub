@@ -26,15 +26,13 @@ class EpubMaker{
     }
 
     private function makeMimetype(){
-        $file = new FileEntry('mimetype');
-        $file->setContent($this->_epub->mimetype());
+        $file = (new FileEntry('mimetype'))->templatable();
         return $file;
     }
 
     private function makeMetainf(){
         $metainf = new DirectoryEntry('META-INF');
-        $file = new FileEntry('container.xml');
-        $file->setContent($this->_epub->containerXML());
+        $file = (new FileEntry('container.xml'))->templatable();
         $metainf->add($file);
         return $metainf;
     }
@@ -45,8 +43,7 @@ class EpubMaker{
     }
 
     private function makeCss(){
-        $file = new FileEntry('style.css');
-        $file->setContent($this->_epub->styleCss());
+        $file = (new FileEntry('style.css'))->templatable();
         return $file;
     }
 

@@ -37,8 +37,7 @@ class EpubMaker{
         return $metainf;
     }
     private function makeNavi(){
-        $file = new FileEntry('phpepub-navi.xhtml');
-        $file->setContent($this->_epub->navigation($this->_contents));
+        $file = (new FileEntry('phpepub-navi.xhtml'))->templatable();
         return $file;
     }
 

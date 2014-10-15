@@ -8,10 +8,10 @@ class EpubPublisher{
 
     private $_zip = null;
 
-    public function __construct($book){
+    public function __construct($book, $source){
         $this->_book = $book;
         $this->_zip = new ZipArchive();
-        $this->_epub = new EpubContents();
+        $this->_epub = new EpubContents($source);
     }
 
 
@@ -41,7 +41,7 @@ class EpubPublisher{
      *  Create epub content from twig template
      * */
     private function getTempalteContent($child){
-        $filename = str_replace(' ', '', lcfirst(ucwords(str_replace('.', ' ', $child->getName()))));
+        $filename = str_replace(' ', '', lcfirst(ucwords(preg_replace('/[\.\-]/', ' ', $child->getName()))));
         return $this->_epub->$filename();
     }
 

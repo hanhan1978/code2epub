@@ -26,7 +26,7 @@ $source = $crawler->crawl();
 $maker = new EpubMaker($source);
 $book = $maker->assemble();
 
-$publisher = new EpubPublisher($book);
+$publisher = new EpubPublisher($book, $source);
 $publisher->archive();
 
 exit(0);

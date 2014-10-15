@@ -16,7 +16,7 @@ class EpubPublisherTest extends PHPUnit_Framework_TestCase{
         $sample1 = $this->nestFileObj->crawl();
         $makerObj1 = new EpubMaker($sample1);
         $book1 = $makerObj1->assemble();
-        $obj1 = new EpubPublisher($book1);
+        $obj1 = new EpubPublisher($book1, $sample1);
         $obj1->archive();
 
         $this->assertEquals( true, is_file("sampleWithNestedContents.epub"));
@@ -24,7 +24,7 @@ class EpubPublisherTest extends PHPUnit_Framework_TestCase{
         $sample2 = $this->singleFileObj->crawl();
         $makerObj2 = new EpubMaker($sample2);
         $book2 = $makerObj2->assemble();
-        $obj2 = new EpubPublisher($book2);
+        $obj2 = new EpubPublisher($book2, $sample2);
         $obj2->archive();
 
         $this->assertEquals( true, is_file("fuga.txt.epub"));

@@ -3,10 +3,13 @@
 class EpubContents{
 
     private $_twig;
+    private $_source;
 
-    public function __construct(){
+    public function __construct($source = null){
         $loader = new Twig_Loader_Filesystem(ROOT.'res/twig/templates');
         $this->_twig = new Twig_Environment($loader);
+
+        $this->_source = $source;
     }
 
     public function mimetype(){
@@ -39,8 +42,8 @@ class EpubContents{
         return $this->_twig->render('style.css', array(''));
     }
 
-    public function navigation($contents){
-        $nav = self::makeNavigation($contents);
+    public function phpepubNaviXhtml(){
+        $nav = self::makeNavigation($this->_source);
         return $this->_twig->render('navigation.xhtml', array('navi' => $nav));
     }
 

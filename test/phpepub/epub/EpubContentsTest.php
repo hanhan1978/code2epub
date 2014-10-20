@@ -18,12 +18,16 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
 
     public function testPakageOPF(){
 
-        $xhtmls = array('page1', 'hoge/page2', 'page3');
-        $packageOPF = $this->_epub->packageOPF('titletest', $xhtmls);
+        $sample1 = $this->nestFileObj->crawl();
+        $makerObj1 = new EpubMaker($sample1);
+        $book1 = $makerObj1->assemble();
+        $this->_epub = new EpubContents($sample1, $book1);
 
-        $this->assertEquals(1, preg_match('|<dc:title>titletest</dc:title>|u', $packageOPF));
-        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub_page1.xhtml" id="page1"|', $packageOPF));
-        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub_hoge_page2.xhtml" id="hoge_page2"|', $packageOPF));
+        $packageOPF = $this->_epub->packageOPF();
+
+        $this->assertEquals(1, preg_match('|<dc:title>sampleWithNestedContents</dc:title>|u', $packageOPF));
+        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub__Users_hanhan_dev_phpepub_test_res_sampleWithNestedContents_fuga2-2_php.xhtml" id="_Users_hanhan_dev_phpepub_test_res_sampleWithNestedContents_fuga2-2_php"|', $packageOPF));
+        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub__Users_hanhan_dev_phpepub_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt.xhtml" id="_Users_hanhan_dev_phpepub_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt"|', $packageOPF));
     }
 
     public function testNavigation(){
@@ -45,10 +49,7 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
         $makerObj1 = new EpubMaker($sample1);
         $book1 = $makerObj1->assemble();
 
-
         $mimetype = $book1->getChildren()[0];
-        //$content = trim($this->_epub->singleFile(basename($sampleXhtml1->getPath()),file_get_contents($sampleXhtml1->getPath()) ));
-
 
         $sampleXhtml3 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[1];
         $sampleXhtml2 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[2];

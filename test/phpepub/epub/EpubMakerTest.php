@@ -38,12 +38,12 @@ class EpubMakerTest extends PHPUnit_Framework_TestCase{
 
         $xhtml1 = $epub1->getChildren()[1];
         $this->assertEquals("phpepub-navi.xhtml", $xhtml1->getChildren()[0]->getName());
-        $this->assertEquals($this->_epub->createFileName($this->_nestFilePath."fuga2-1.txt"), $xhtml1->getChildren()[1]->getName());
-        $this->assertEquals($this->_epub->createFileName($this->_nestFilePath."fuga2-2.php"), $xhtml1->getChildren()[2]->getName());
-        $this->assertEquals($this->_epub->createFileName($this->_nestFilePath."hoge2-1/fuga3-1.txt"), $xhtml1->getChildren()[3]->getName());
-        $this->assertEquals($this->_epub->createFileName($this->_nestFilePath."hoge2-1/fuga3-2.txt"), $xhtml1->getChildren()[4]->getName());
-        $this->assertEquals($this->_epub->createFileName($this->_nestFilePath."hoge2-1/hoge3-1/fuga4-1.txt"), $xhtml1->getChildren()[5]->getName());
-        $this->assertEquals($this->_epub->createFileName($this->_nestFilePath."hoge2-1/hoge3-1/fuga4-2.txt"), $xhtml1->getChildren()[6]->getName());
+        $this->assertEquals(EpubUtility::createFileName($this->_nestFilePath."fuga2-1.txt"), $xhtml1->getChildren()[1]->getName());
+        $this->assertEquals(EpubUtility::createFileName($this->_nestFilePath."fuga2-2.php"), $xhtml1->getChildren()[2]->getName());
+        $this->assertEquals(EpubUtility::createFileName($this->_nestFilePath."hoge2-1/fuga3-1.txt"), $xhtml1->getChildren()[3]->getName());
+        $this->assertEquals(EpubUtility::createFileName($this->_nestFilePath."hoge2-1/fuga3-2.txt"), $xhtml1->getChildren()[4]->getName());
+        $this->assertEquals(EpubUtility::createFileName($this->_nestFilePath."hoge2-1/hoge3-1/fuga4-1.txt"), $xhtml1->getChildren()[5]->getName());
+        $this->assertEquals(EpubUtility::createFileName($this->_nestFilePath."hoge2-1/hoge3-1/fuga4-2.txt"), $xhtml1->getChildren()[6]->getName());
         $this->assertFalse(isset($xhtml1->getChildren()[7]));
 
         $css1 = $epub1->getChildren()[2];
@@ -55,7 +55,7 @@ class EpubMakerTest extends PHPUnit_Framework_TestCase{
         $epub2 = $book2->getChildren()[2];
         $xhtml2 = $epub2->getChildren()[1];
         $this->assertEquals("phpepub-navi.xhtml", $xhtml2->getChildren()[0]->getName());
-        $this->assertEquals($this->_epub->createFileName($this->_singleFilePath), $xhtml2->getChildren()[1]->getName());
+        $this->assertEquals(EpubUtility::createFileName($this->_singleFilePath), $xhtml2->getChildren()[1]->getName());
     }
 
 }

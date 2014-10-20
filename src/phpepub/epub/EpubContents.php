@@ -21,23 +21,14 @@ class EpubContents{
         return $this->_twig->render('container.xml', array(''));
     }
 
-    public function packageOPF($title, $xhtmls){
+    public function packageOPF(){
         $files = array();
-        foreach($xhtmls as $xhtml){
-            $files[] = array('name' => self::createFileName($xhtml) , 'id' => self::createId($xhtml));
+        foreach(EpubUtility::contents2array($this->_source) as $file){
+            $files[] = array('name' => EpubUtility::createFileName($file->getPath()) , 'id' => EpubUtility::createId($file->getPath()));
         }
-        return $this->_twig->render('package.opf', array('title' => $title, 'files' => $files));
-    }
-    private function replaceSlash($str){
-        return preg_replace('|[/\.]|', '_', $str);
+        return $this->_twig->render('package.opf', array('title' => $this->_source->getName(), 'files' => $files));
     }
 
-    public function createFileName($str){
-        return "phpepub_".self::replaceSlash($str).".xhtml";
-    }
-    private function createId($str){
-        return self::replaceSlash($str);
-    }
 
     public function styleCss(){
         return $this->_twig->render('style.css', array(''));
@@ -52,7 +43,7 @@ class EpubContents{
         $navi = "";
         $children = $contents->getChildren();
         if($children === false){
-            $name = self::replaceSlash($contents->getPath());
+            $name = EpubUtility::replaceSlash($contents->getPath());
             $navi .= '   <ol><li id="'.$name.'"><a href="phpepub_'.$name.'.xhtml">'.$contents->getName().'</a></li></ol>'."\n";
         }else{
             $navi .= (count($children) > 0)? "    <ol>\n" : "";
@@ -62,7 +53,7 @@ class EpubContents{
                     $navi .= self::makeNavigation($child);
                     $navi .= "    </li>\n";
                 }else{
-                    $name = self::replaceSlash($child->getPath());
+                    $name = EpubUtility::replaceSlash($child->getPath());
                     $navi .= '    <li id="'.$name.'"><a href="phpepub_'.$name.'.xhtml">'.$child->getName().'</a></li>'."\n";
                 }
             }
@@ -80,10 +71,8 @@ class EpubContents{
     private function editSource($source){
         $source = htmlentities($source);
         $source = preg_replace("/\t/", '    ', $source);
-
         $lines = preg_split("/[\r\n]+/", $source);
         $lines = preg_replace("/ /", '&#160;', $lines);
-
         return $lines; 
     }
 

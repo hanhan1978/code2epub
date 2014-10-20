@@ -15,7 +15,7 @@ class EpubMaker{
 
     public function assemble(){
 
-        $book = new DirectoryEntry($this->getTitle()); 
+        $book = new DirectoryEntry($this->_contents->getName()); 
         $book->add($this->makeMimetype());
         $book->add($this->makeMetainf());
         $book->add($this->makeEpub());
@@ -48,9 +48,17 @@ class EpubMaker{
         $epub = new DirectoryEntry('EPUB');
         $xhtml = new DirectoryEntry('xhtml');
         $xhtml->add( $this->makeNavi()); 
-        $xhtml = EpubUtility::makeXhtml($this->_contents, $xhtml );
-//        $xhtml->dump();
-        $epub->add($this->makePakageOpf($this->entry2array($xhtml)));
+
+//        $xhtml = EpubUtility::makeXhtml($this->_contents, $xhtml );
+        $files = EpubUtility::contents2array($this->_contents);
+        foreach($files as $file){
+            $xhtml->add($file);
+        }
+
+
+//        $epub->add($this->makePakageOpf($this->entry2array($xhtml)));
+        $epub->add((new FileEntry('package.opf'))->templatable());
+
         $epub->add($xhtml);
         $css = new DirectoryEntry('css');
         $css->add($this->makeCss());
@@ -59,24 +67,6 @@ class EpubMaker{
         return $epub;
     }
 
-    private function entry2array($xhtml){
-        $arr = array();
-        foreach($xhtml->getChildren() as $child){
-            $arr[] = $child->getPath();
-        }
-        return $arr;
-    }
-
-    private function makePakageOpf($xhtml){
-        $entry = new FileEntry('package.opf');
-        array_shift($xhtml);
-        $entry->setContent($this->_epub->packageOPF($this->getTitle(), $xhtml));
-        return $entry;
-    }
-
-    private function getTitle(){
-        return $this->_contents->getName();
-    }
 
 
 }

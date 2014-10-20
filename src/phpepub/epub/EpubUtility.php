@@ -2,26 +2,30 @@
 
 class EpubUtility{
 
-
-    public static function makeXhtml($contents, $container = null){
+    public static function contents2array($contents){
+        $ret_array = array();
         $children = $contents->getChildren();
         if($children === false){
             $contents->setName(self::createFileName($contents->getPath()));
-            $container->add($contents);
+            $ret_array[] = $contents; 
         }else{
             foreach($children as $child){
-                self::makeXhtml($child, $container);
+                $ret_array = array_merge($ret_array, self::contents2array($child));
             }
         }
-        return $container;
+        return $ret_array;
     }
+
 
     public static function createfilename($str){
         return "phpepub_".self::replaceSlash($str).".xhtml";
     }
 
-    private static function replaceSlash($str){
+    public static function replaceSlash($str){
         return preg_replace('|[/\.]|', '_', $str);
     }
 
+    public static function createId($str){
+        return self::replaceSlash($str);
+    }
 }

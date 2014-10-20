@@ -4,12 +4,13 @@ class EpubContents{
 
     private $_twig;
     private $_source;
+    private $_book;
 
-    public function __construct($source = null){
+    public function __construct($source = null, $book = null){
         $loader = new Twig_Loader_Filesystem(ROOT.'res/twig/templates');
         $this->_twig = new Twig_Environment($loader);
-
         $this->_source = $source;
+        $this->_book = $book;
     }
 
     public function mimetype(){

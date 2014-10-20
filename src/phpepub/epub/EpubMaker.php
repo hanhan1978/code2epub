@@ -19,8 +19,6 @@ class EpubMaker{
         $book->add($this->makeMimetype());
         $book->add($this->makeMetainf());
         $book->add($this->makeEpub());
-
-
         return $book;
 
     }
@@ -50,10 +48,10 @@ class EpubMaker{
         $epub = new DirectoryEntry('EPUB');
         $xhtml = new DirectoryEntry('xhtml');
         $xhtml->add( $this->makeNavi()); 
-        $xhtml = $this->makeXhtml($this->_contents, $xhtml );
+        $xhtml = EpubUtility::makeXhtml($this->_contents, $xhtml );
+//        $xhtml->dump();
         $epub->add($this->makePakageOpf($this->entry2array($xhtml)));
         $epub->add($xhtml);
-
         $css = new DirectoryEntry('css');
         $css->add($this->makeCss());
         $epub->add($css);
@@ -73,24 +71,8 @@ class EpubMaker{
         $entry = new FileEntry('package.opf');
         array_shift($xhtml);
         $entry->setContent($this->_epub->packageOPF($this->getTitle(), $xhtml));
-
-
         return $entry;
     }
-
-    private function makeXhtml($contents, $container = null){
-        $children = $contents->getChildren();
-        if($children === false){
-            $contents->setName($this->_epub->createFileName($contents->getPath()));
-            $container->add($contents);
-        }else{
-            foreach($children as $child){
-                $this->makeXhtml($child, $container);
-            }
-        }
-        return $container;
-    }
-
 
     private function getTitle(){
         return $this->_contents->getName();

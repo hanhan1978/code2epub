@@ -26,8 +26,8 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
         $packageOPF = $this->_epub->packageOPF();
 
         $this->assertEquals(1, preg_match('|<dc:title>sampleWithNestedContents</dc:title>|u', $packageOPF));
-        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub__Users_hanhan_dev_phpepub_test_res_sampleWithNestedContents_fuga2-2_php.xhtml" id="_Users_hanhan_dev_phpepub_test_res_sampleWithNestedContents_fuga2-2_php"|', $packageOPF));
-        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub__Users_hanhan_dev_phpepub_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt.xhtml" id="_Users_hanhan_dev_phpepub_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt"|', $packageOPF));
+        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub_[a-zA-Z_]+_test_res_sampleWithNestedContents_fuga2-2_php.xhtml" id="[A-Za-z_]+_test_res_sampleWithNestedContents_fuga2-2_php"|', $packageOPF));
+        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub_[a-zA-Z_]+_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt.xhtml" id="[a-zA-Z_]+_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt"|', $packageOPF));
     }
 
     public function testNavigation(){

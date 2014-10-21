@@ -2,3 +2,5 @@ filter:
     excluded_paths:
         - test/*
         - vendor/*
+tools:
+    php_code_sniffer: true

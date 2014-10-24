@@ -1,26 +1,21 @@
 <?php
 
-
 class EpubMaker{
 
     private $_contents;
     private $_epub;
 
-    //TODO create packageOPF content & navigation, that's all
-    //
     public function __construct($_contents){
         $this->_contents = $_contents;
         $this->_epub = new EpubContents();
     }
 
     public function assemble(){
-
         $book = new DirectoryEntry($this->_contents->getName()); 
         $book->add($this->makeMimetype());
         $book->add($this->makeMetainf());
         $book->add($this->makeEpub());
         return $book;
-
     }
 
     private function makeMimetype(){
@@ -34,6 +29,7 @@ class EpubMaker{
         $metainf->add($file);
         return $metainf;
     }
+
     private function makeNavi(){
         $file = (new FileEntry('phpepub-navi.xhtml'))->templatable();
         return $file;
@@ -48,22 +44,15 @@ class EpubMaker{
         $epub = new DirectoryEntry('EPUB');
         $xhtml = new DirectoryEntry('xhtml');
         $xhtml->add( $this->makeNavi()); 
-
-//        $xhtml = EpubUtility::makeXhtml($this->_contents, $xhtml );
         $files = EpubUtility::contents2array($this->_contents);
         foreach($files as $file){
             $xhtml->add($file);
         }
-
-
-//        $epub->add($this->makePakageOpf($this->entry2array($xhtml)));
         $epub->add((new FileEntry('package.opf'))->templatable());
-
         $epub->add($xhtml);
         $css = new DirectoryEntry('css');
         $css->add($this->makeCss());
         $epub->add($css);
-
         return $epub;
     }
 

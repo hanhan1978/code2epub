@@ -46,6 +46,8 @@ class EpubMaker{
         $xhtml->add( $this->makeNavi()); 
         $files = EpubUtility::contents2array($this->_contents);
         foreach($files as $file){
+            $file = new FileEntry($file->getPath(), $file->getParentName());
+            $file->setName(EpubUtility::createFileName($file->getPath()));
             $xhtml->add($file);
         }
         $epub->add((new FileEntry('package.opf'))->templatable());

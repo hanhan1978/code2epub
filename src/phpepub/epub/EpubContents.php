@@ -39,22 +39,22 @@ class EpubContents{
         return $this->_twig->render('navigation.xhtml', array('navi' => $nav));
     }
 
-    private function makeNavigation($contents){
+    private function makeNavigation($contents, $level=1){
         $navi = "";
         $children = $contents->getChildren();
         if($children === false){
             $name = EpubUtility::replaceSlash($contents->getPath());
-            $navi .= '   <ol><li id="'.$name.'"><a href="phpepub_'.$name.'.xhtml">'.$contents->getName().'</a></li></ol>'."\n";
+            $navi .= '   <ol><li class=\'level'.$level.'\' id="'.$name.'"><a href="phpepub_'.$name.'.xhtml">'.$contents->getName().'</a></li></ol>'."\n";
         }else{
             $navi .= (count($children) > 0)? "    <ol>\n" : "";
             foreach($children as $child){
                 if($child->getChildren() !==false){
-                    $navi .= "    <li>".$child->getName()."\n";
-                    $navi .= self::makeNavigation($child);
+                    $navi .= "    <li class='level$level'>".$child->getName()."\n";
+                    $navi .= self::makeNavigation($child, $level++);
                     $navi .= "    </li>\n";
                 }else{
                     $name = EpubUtility::replaceSlash($child->getPath());
-                    $navi .= '    <li id="'.$name.'"><a href="phpepub_'.$name.'.xhtml">'.$child->getName().'</a></li>'."\n";
+                    $navi .= '    <li class=\'level'.$level.'\' id="'.$name.'"><a href="phpepub_'.$name.'.xhtml">'.$child->getName().'</a></li>'."\n";
                 }
             }
             $navi .= (count($children) > 0)? "    </ol>\n" : "";

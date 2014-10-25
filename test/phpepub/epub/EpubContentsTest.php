@@ -33,13 +33,17 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
 
     public function testNavigation(){
         $sample1 = $this->nestFileObj->crawl();
+ //       $sample1->dump();
         $makerObj1 = new EpubMaker($sample1);
         $book1 = $makerObj1->assemble();
         $this->_epub = new EpubContents($sample1);
         $navigation = $this->_epub->phpepubNaviXhtml();
+        
+//        var_dump($navigation);
         $this->assertEquals(1, preg_match('|<li class=\'level1\'>hoge2-1|u', $navigation));
         $this->assertEquals(1, preg_match('|fuga2-2.php</a></li>|u', $navigation));
-        $this->assertEquals(1, preg_match('|<li class=\'level2\'>hoge2-2\n    </li>|us', $navigation));
+        $this->assertEquals(1, preg_match('|<li class=\'level1\'>hoge2-2\n    </li>|us', $navigation));
+        $this->assertEquals(1, preg_match('|<li class=\'level2\'>hoge3-1\n|us', $navigation));
 
         $sample2 = $this->singleFileObj->crawl();
         $this->_epub = new EpubContents($sample2);

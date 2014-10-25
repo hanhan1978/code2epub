@@ -50,7 +50,7 @@ class EpubContents{
             foreach($children as $child){
                 if($child->getChildren() !==false){
                     $navi .= "    <li class='level$level'>".$child->getName()."\n";
-                    $navi .= self::makeNavigation($child, $level++);
+                    $navi .= self::makeNavigation($child, $level+1);
                     $navi .= "    </li>\n";
                 }else{
                     $name = EpubUtility::replaceSlash($child->getPath());

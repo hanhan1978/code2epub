@@ -36,7 +36,7 @@ class EpubContents{
 
     public function phpepubNaviXhtml(){
         $nav = self::makeNavigation($this->_source);
-        return $this->_twig->render('navigation.xhtml', array('navi' => $nav));
+        return $this->_twig->render('navigation.xhtml', array('title' => $this->_source->getName(), 'navi' => $nav));
     }
 
     private function makeNavigation($contents, $level=1){

@@ -35,7 +35,7 @@ class EpubMakerTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals("css", $epub1->getChildren()[2]->getName());
 
         $xhtml1 = $epub1->getChildren()[1];
-        $this->assertEquals("phpepub-navi.xhtml", $xhtml1->getChildren()[0]->getName());
+        $this->assertEquals("code2epub-navi.xhtml", $xhtml1->getChildren()[0]->getName());
         $this->assertEquals(EpubUtility::createFileName($this->_nestFilePath."fuga2-1.txt"), $xhtml1->getChildren()[1]->getName());
         $this->assertEquals(EpubUtility::createFileName($this->_nestFilePath."fuga2-2.php"), $xhtml1->getChildren()[2]->getName());
         $this->assertEquals(EpubUtility::createFileName($this->_nestFilePath."hoge2-1/fuga3-1.txt"), $xhtml1->getChildren()[3]->getName());
@@ -52,7 +52,7 @@ class EpubMakerTest extends PHPUnit_Framework_TestCase{
         $book2 = $makerObj2->assemble();
         $epub2 = $book2->getChildren()[2];
         $xhtml2 = $epub2->getChildren()[1];
-        $this->assertEquals("phpepub-navi.xhtml", $xhtml2->getChildren()[0]->getName());
+        $this->assertEquals("code2epub-navi.xhtml", $xhtml2->getChildren()[0]->getName());
         $this->assertEquals(EpubUtility::createFileName($this->_singleFilePath), $xhtml2->getChildren()[1]->getName());
     }
 

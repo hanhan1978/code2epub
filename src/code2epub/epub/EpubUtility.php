@@ -22,7 +22,7 @@ class EpubUtility{
 
 
     public static function createfilename($str){
-        return "phpepub_".self::replaceSlash($str).".xhtml";
+        return "code2epub_".self::replaceSlash($str).".xhtml";
     }
 
     public static function replaceSlash($str){

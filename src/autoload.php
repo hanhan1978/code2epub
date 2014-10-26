@@ -9,7 +9,7 @@ define("ROOT", dirname(__FILE__)."/../");
 require_once ROOT.'vendor/autoload.php';
 
 /*
- * Autoloader for phpepub
+ * Autoloader for code2epub
  * @param $className  Name of class to be loaded
  */
 function loadLibrary($className) {

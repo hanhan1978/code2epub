@@ -8,13 +8,13 @@
       <meta property="dcterms:modified">2012-02-27T16:38:35Z</meta>
    </metadata>
    <manifest>
-      <item href="xhtml/phpepub-navi.xhtml" id="navi" media-type="application/xhtml+xml" properties="nav"/>
+      <item href="xhtml/code2epub-navi.xhtml" id="navi" media-type="application/xhtml+xml" properties="nav"/>
       {% for file in files %}
       <item href="xhtml/{{ file.name }}" id="{{ file.id }}" media-type="application/xhtml+xml"/>
       {% endfor %}
    </manifest>
    <spine>
-      <itemref idref="navi"/>
+      <itemref idref="navi" linear="no"/>
       {% for file in files %}
       <itemref idref="{{ file.id }}"/>
       {% endfor %}

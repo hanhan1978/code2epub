@@ -24,11 +24,11 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
         $this->_epub = new EpubContents($sample1, $book1);
 
         $packageOPF = $this->_epub->packageOPF();
-        $navigation = $this->_epub->phpepubNaviXhtml();
+        $navigation = $this->_epub->code2epubNaviXhtml();
 
         $this->assertEquals(1, preg_match('|<dc:title>sampleWithNestedContents</dc:title>|u', $packageOPF));
-        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub_[0-9a-zA-Z_]+_test_res_sampleWithNestedContents_fuga2-2_php.xhtml" id="[0-9A-Za-z_]+_test_res_sampleWithNestedContents_fuga2-2_php"|', $packageOPF));
-        $this->assertEquals(1, preg_match('|<item href="xhtml/phpepub_[0-9a-zA-Z_]+_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt.xhtml" id="[0-9a-zA-Z_]+_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt"|', $packageOPF));
+        $this->assertEquals(1, preg_match('|<item href="xhtml/code2epub_[0-9a-zA-Z_]+_test_res_sampleWithNestedContents_fuga2-2_php.xhtml" id="[0-9A-Za-z_]+_test_res_sampleWithNestedContents_fuga2-2_php"|', $packageOPF));
+        $this->assertEquals(1, preg_match('|<item href="xhtml/code2epub_[0-9a-zA-Z_]+_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt.xhtml" id="[0-9a-zA-Z_]+_test_res_sampleWithNestedContents_hoge2-1_fuga3-1_txt"|', $packageOPF));
     }
 
     public function testNavigation(){
@@ -37,7 +37,7 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
         $makerObj1 = new EpubMaker($sample1);
         $book1 = $makerObj1->assemble();
         $this->_epub = new EpubContents($sample1);
-        $navigation = $this->_epub->phpepubNaviXhtml();
+        $navigation = $this->_epub->code2epubNaviXhtml();
         
 //        var_dump($navigation);
         $this->assertEquals(1, preg_match('|<li class=\'level1\'>hoge2-1|u', $navigation));
@@ -47,7 +47,7 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
 
         $sample2 = $this->singleFileObj->crawl();
         $this->_epub = new EpubContents($sample2);
-        $navigation = $this->_epub->phpepubNaviXhtml();
+        $navigation = $this->_epub->code2epubNaviXhtml();
         
         $this->assertEquals(1, preg_match('|fuga.txt</a>|u', $navigation));
     }

@@ -8,19 +8,10 @@
 
 <body>        
   <div class='container'>
-  <nav epub:type="toc" id="toc">
-    <h1 class="title">Table of Contents</h1>    
-    {% autoescape false %} 
-    {{ navi }}
-    {% endautoescape %}
-  </nav>
+      <div class='title-box'>
+      <span class='title'>{{title}}</span>
+      </div>
   </div>
         
-  <nav epub:type="landmarks" hidden="">
-    <h2>Guide</h2>
-    <ol>
-      <li><a epub:type="toc" href="#toc">Table of Contents</a></li>
-    </ol>
-  </nav>
 </body>
 </html>

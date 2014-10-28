@@ -21,6 +21,10 @@ class EpubContents{
         return $this->_twig->render('container.xml', array(''));
     }
 
+    public function code2epubTitleXhtml(){
+        return $this->_twig->render('title.xhtml', array('title' => $this->_source->getName()));
+    }
+
     public function packageOPF(){
         $files = array();
         foreach(EpubUtility::contents2array($this->_source) as $file){

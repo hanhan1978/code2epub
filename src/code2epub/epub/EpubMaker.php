@@ -43,6 +43,7 @@ class EpubMaker{
     private function makeEpub(){
         $epub = new DirectoryEntry('EPUB');
         $xhtml = new DirectoryEntry('xhtml');
+        $xhtml->add((new FileEntry('code2epub-title.xhtml'))->templatable());
         $xhtml->add( $this->makeNavi()); 
         $files = EpubUtility::contents2array($this->_contents);
         foreach($files as $file){

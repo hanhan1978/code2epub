@@ -59,9 +59,9 @@ class EpubContentsTest extends PHPUnit_Framework_TestCase{
 
         $mimetype = $book1->getChildren()[0];
 
-        $sampleXhtml3 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[1];
-        $sampleXhtml2 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[2];
-        $sampleXhtml1 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[3];
+        $sampleXhtml3 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[2];
+        $sampleXhtml2 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[3];
+        $sampleXhtml1 = $book1->getChildren()[2]->getChildren()[1]->getChildren()[4];
         $content = trim($this->_epub->singleFile(basename($sampleXhtml1->getPath()),file_get_contents($sampleXhtml1->getPath()) ));
         $this->assertEquals(1, preg_match("|<div class='line-number'>1</div>&lt;\?php<br/>|", $content));
     }

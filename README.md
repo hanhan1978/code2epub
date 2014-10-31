@@ -10,7 +10,7 @@ PHP5.4 or higher
 
 Installation
 =======
-Download later `code2epub.phar` from [release page](https://github.com/hanhan1978/code2epub/releases).
+Download the latest `code2epub.phar` from [release page](https://github.com/hanhan1978/code2epub/releases).
 
 How To Create Epub
 =======

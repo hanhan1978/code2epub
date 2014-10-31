@@ -21,7 +21,7 @@ require_once(dirname(__FILE__)."/../src/autoload.php");
 //}
 
 //EPUB Contents Collection
-$crawler = CrawlerFactory::createCrawler($argv[1]);
+$crawler = CrawlerFactory::createCrawler(realpath($argv[1]));
 $source = $crawler->crawl();
 $maker = new EpubMaker($source);
 $book = $maker->assemble();
